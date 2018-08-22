@@ -5,10 +5,17 @@ ModelImporter:
   fileIDToRecycleName:
     100000: //RootNode
     400000: //RootNode
-    2100000: room material
+    2100000: bottom material
+    2100002: floor material
+    2100004: wall material
+    2100006: wood material
+    2100008: door material
+    2100010: door lock
+    2100012: glass material
+    2100014: ceiling material
     2300000: //RootNode
     3300000: //RootNode
-    4300000: Cube
+    4300000: Room
   externalObjects: {}
   materials:
     importMaterials: 1
