@@ -11,11 +11,11 @@ public class RoomSrcipt : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
         Lights = GameObject.FindGameObjectsWithTag("light");
-	}
+    }
 	
 	// Update is called once per frame
 	void Update () {
-        if (Input.GetKeyDown(KeyCode.L))
+        if (Input.GetKeyDown(KeyCode.Joystick1Button3))
         {
             isLightUp = !isLightUp;
             foreach(GameObject Light in Lights)
@@ -24,4 +24,5 @@ public class RoomSrcipt : MonoBehaviour {
             }
         }
 	}
+
 }
