@@ -1,7 +1,9 @@
 ﻿
-Microsoft Visual Studio Solution File, Format Version 11.00
-# Visual Studio 2010
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VR Collaborative Meeting", "Assembly-CSharp.csproj", "{04B0374B-29F1-ADE3-598A-897FC10CD768}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VR Collaborative Meeting", "Assembly-CSharp-firstpass.csproj", "{000578DB-CA73-F32D-8D18-51E1E20B2590}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VR Collaborative Meeting", "Assembly-CSharp-Editor.csproj", "{9DECDC92-2A22-C2FE-012A-5B12D91B1D8B}"
 EndProject
@@ -15,6 +17,10 @@ Global
 		{04B0374B-29F1-ADE3-598A-897FC10CD768}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{04B0374B-29F1-ADE3-598A-897FC10CD768}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{04B0374B-29F1-ADE3-598A-897FC10CD768}.Release|Any CPU.Build.0 = Release|Any CPU
+		{000578DB-CA73-F32D-8D18-51E1E20B2590}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{000578DB-CA73-F32D-8D18-51E1E20B2590}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{000578DB-CA73-F32D-8D18-51E1E20B2590}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{000578DB-CA73-F32D-8D18-51E1E20B2590}.Release|Any CPU.Build.0 = Release|Any CPU
 		{9DECDC92-2A22-C2FE-012A-5B12D91B1D8B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{9DECDC92-2A22-C2FE-012A-5B12D91B1D8B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{9DECDC92-2A22-C2FE-012A-5B12D91B1D8B}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -22,8 +28,5 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
-	EndGlobalSection
-	GlobalSection(MonoDevelopProperties) = preSolution
-		StartupItem = Assembly-CSharp.csproj
 	EndGlobalSection
 EndGlobal
