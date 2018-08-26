@@ -1,12 +1,10 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 
 public class EstablishConnection : MonoBehaviour {
 
-    /// <summary>Connect automatically? If false you can set this to true later on or call ConnectUsingSettings in your own scripts.</summary>
-    public bool AutoConnect = true;
+    public GameObject player;
 
     public byte Version = 1;
 
@@ -16,7 +14,8 @@ public class EstablishConnection : MonoBehaviour {
 
     public virtual void Start()
     {
-        PhotonNetwork.ConnectUsingSettings(Version + "." + SceneManagerHelper.ActiveSceneBuildIndex);
+        PhotonNetwork.ConnectUsingSettings("1.0");
+        var temp = PhotonVoiceNetwork.Client;
     }
 
     // below, we implement some callbacks of PUN
@@ -50,7 +49,7 @@ public class EstablishConnection : MonoBehaviour {
 
     public void OnJoinedRoom()
     {
-        SceneManager.LoadScene(1);
         Debug.Log("OnJoinedRoom() called by PUN. Now this client is in a room. From here on, your game would be running. For reference, all callbacks are listed in enum: PhotonNetworkingMessage");
+        PhotonNetwork.Instantiate(player.name, CameraManager.instance.head.transform.position, player.transform.rotation, 0);
     }
 }
