@@ -2560,7 +2560,7 @@ namespace ExitGames.Client.Photon.LoadBalancing
                     {
                         byte[] secret1 = (byte[])encryptionData[EncryptionDataParameters.Secret1];
                         byte[] secret2 = (byte[])encryptionData[EncryptionDataParameters.Secret2];
-                        this.loadBalancingPeer.InitDatagramEncryption(secret1, secret2, mode == EncryptionMode.DatagramEncryptionRandomSequence);
+                        this.loadBalancingPeer.InitDatagramEncryption(secret1, secret2);
                     }
                     break;
                 default:

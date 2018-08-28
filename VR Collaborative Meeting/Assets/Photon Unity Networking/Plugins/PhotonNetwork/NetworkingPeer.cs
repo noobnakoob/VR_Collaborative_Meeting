@@ -3710,7 +3710,7 @@ internal class NetworkingPeer : LoadBalancingPeer, IPhotonPeerListener
         opParameters[ParameterCode.Code] = (byte)0;		// any event
         opParameters[ParameterCode.Cache] = (byte)EventCaching.RemoveFromRoomCacheForActorsLeft;    // option to clear the room cache of all events of players who left
 
-        this.SendOperation((byte)OperationCode.RaiseEvent, opParameters, SendOptions.SendReliable);
+        this.OpCustom((byte)OperationCode.RaiseEvent, opParameters, true, 0);
     }
 
     // Remove RPCs of view (if they are local player's RPCs)
@@ -4719,7 +4719,7 @@ internal class NetworkingPeer : LoadBalancingPeer, IPhotonPeerListener
         opParameters.Add(ParameterCode.UriPath, uriPath);
         opParameters.Add(ParameterCode.WebRpcParameters, parameters);
 
-        return this.SendOperation(OperationCode.WebRpc, opParameters, SendOptions.SendReliable);
+        return this.OpCustom(OperationCode.WebRpc, opParameters, true);
 
     }
 }

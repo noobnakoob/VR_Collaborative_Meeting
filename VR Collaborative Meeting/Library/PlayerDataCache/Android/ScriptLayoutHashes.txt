@@ -1,6 +1,6 @@
 Android
 PlayerPath?
-C:/Users/Petar/Desktop/test.apk
+C:/Users/aleks/Desktop/Test.apk
 SceneListBegin?
 Assets/Scenes/Main_Scene.unity
 SceneListEnd?
@@ -330,6 +330,7 @@ a5c0922eaefc590249dcc174ad61b107 Assembly-CSharp.dll:.FriendItem
 28a95668dd28649297d595834fe8417e UnityEngine.GoogleAudioSpatializer.dll:UnityEngine.Experimental.Audio.Google.GvrAudioSoundfieldExtension
 28a95668dd28649297d595834fe8417e UnityEngine.GoogleAudioSpatializer.dll:UnityEngine.Experimental.Audio.Google.GvrAudioSourceExtension
 2966cc3729fad0478e7468bbed9a058b Assembly-CSharp.dll:.PunTurnManager
+541e5f0dc83f5e0053d8e84c6fe1c92d Assembly-CSharp.dll:.PositioningScript
 0e071e8c9b835f56b2090ddc703cc62a Assembly-CSharp.dll:.GvrControllerVisualManager
 1a90b221dc803408fbafa883c12bcab4 UnityEngine.GoogleAudioSpatializer.dll:UnityEngine.Experimental.Audio.Google.GvrAudioListenerExtension
 70f7dc248db3379548a88e8d4fa049f8 UnityEngine.GoogleAudioSpatializer.dll:UnityEngine.Experimental.Audio.Google.GvrAudioRoom
@@ -485,4 +486,3 @@ ad24de185ef9a605870b931cda4f181e Vuforia.UnityExtensions.dll:Vuforia.VuMarkBehav
 c31ff9acb65f7a15b5c6fd77c3314d83 Vuforia.UnityExtensions.dll:Vuforia.WireframeBehaviour
 486cd95c82d8305219c352c06b776e1f Vuforia.UnityExtensions.dll:Vuforia.WireframeTrackableEventHandler
 33c9cb909c4e84224905299a893011eb Assembly-CSharp.dll:.CubeExtra
-541e5f0dc83f5e0053d8e84c6fe1c92d Assembly-CSharp.dll:.PositioningScript
