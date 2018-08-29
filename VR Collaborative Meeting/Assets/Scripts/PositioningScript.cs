@@ -20,8 +20,6 @@ public class PositioningScript : Photon.MonoBehaviour {
         {
             head.transform.position = CameraManager.instance.head.transform.position;
             head.transform.localRotation = CameraManager.instance.head.transform.rotation;
-            //body.transform.localRotation = new Quaternion(0f, 0f, CameraManager.instance.head.transform.rotation.y, Mathf.Cos(CameraManager.instance.head.transform.rotation.y / 2) + 
-            //    Mathf.Sin(CameraManager.instance.head.transform.rotation.y / 2));
             body.transform.localRotation = Quaternion.Euler(0f, CameraManager.instance.head.transform.rotation.eulerAngles.y, 0f);
             CameraManager.instance.head.transform.parent.position = new Vector3(body.transform.parent.position.x,
                 CameraManager.instance.head.transform.parent.transform.position.y,

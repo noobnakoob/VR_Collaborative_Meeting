@@ -1,0 +1,2 @@
+D:\Workspace\VR_Collaborative_Meeting\VR_Collaborative_Meeting\VR Collaborative Meeting\obj\Debug\Assembly-CSharp-Editor.csprojAssemblyReference.cache
+D:\Workspace\VR_Collaborative_Meeting\VR_Collaborative_Meeting\VR Collaborative Meeting\obj\Debug\Assembly-CSharp-Editor.csproj.CoreCompileInputs.cache
