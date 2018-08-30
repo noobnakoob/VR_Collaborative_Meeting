@@ -91,7 +91,6 @@
     <Compile Include="Assets\Photon Unity Networking\Editor\PhotonNetwork\Views\PhotonTransformViewEditor.cs" />
     <Compile Include="Assets\Photon Unity Networking\UtilityScripts\PhotonPlayer\Editor\PlayerRoomIndexingInspector.cs" />
     <Compile Include="Assets\Photon Unity Networking\UtilityScripts\PhotonPlayer\Editor\PunTeamsInspector.cs" />
-    <Compile Include="Assets\PUNVoice\DemoVoice\Editor\CrossPlatformInput\CrossPlatformInputInitialize.cs" />
     <Compile Include="Assets\PUNVoice\Editor\PhotonVoiceRecorderInspector.cs" />
     <Reference Include="UnityEditor.StandardEvents">
       <HintPath>D:/Workspace/VR_Collaborative_Meeting/VR_Collaborative_Meeting/VR Collaborative Meeting/Library/ScriptAssemblies/UnityEditor.StandardEvents.dll</HintPath>

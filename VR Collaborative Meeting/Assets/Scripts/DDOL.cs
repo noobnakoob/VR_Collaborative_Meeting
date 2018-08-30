@@ -2,10 +2,12 @@
 
 public class DDOL : MonoBehaviour {
 
-	// Use this for initialization
-	private void Awake ()
+    public static DDOL Instance;
+
+    // Use this for initialization
+    private void Awake()
     {
-        DontDestroyOnLoad(this);	
-	}
+        DontDestroyOnLoad(this);
+    }
 	
 }

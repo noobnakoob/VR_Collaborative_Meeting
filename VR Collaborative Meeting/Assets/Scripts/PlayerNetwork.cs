@@ -2,6 +2,7 @@
 using System.IO;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.XR;
 
 public class PlayerNetwork : MonoBehaviour {
 
@@ -14,8 +15,9 @@ public class PlayerNetwork : MonoBehaviour {
 
     // Use this for initialization
     private void Awake()
-    {
+    {       
         Instance = this;
+        XRSettings.enabled = false;
         PhotonView = GetComponent<PhotonView>();
 
         PlayerName = "Client#" + Random.Range(1000, 9999);
@@ -28,8 +30,7 @@ public class PlayerNetwork : MonoBehaviour {
 
     private void OnSceneFinishedLoading(Scene scene, LoadSceneMode mode)
     {
-        Debug.Log(scene.name);
-        if (scene.name == "Lobby_Scene")
+        if (scene.name == "Game")
         {
             if (PhotonNetwork.isMasterClient)
                 MasterLoadedGame();
@@ -63,14 +64,26 @@ public class PlayerNetwork : MonoBehaviour {
         {
             print("All players are in the game scene.");
             PhotonView.RPC("RPC_CreatePlayer", PhotonTargets.All);
+            XRSettings.enabled = true;
         }
     } 
 
     [PunRPC]
     private void RPC_CreatePlayer()
     {
-        float randomValue = Random.Range(0f, 5f);
-        GameObject obj = PhotonNetwork.Instantiate(Path.Combine("Prefabs", "Player"), Vector3.up * randomValue, Quaternion.identity, 0);
+        GameObject positions = GameObject.FindGameObjectWithTag("Respawn");
+        //if (PhotonNetwork.isMasterClient)
+        //{
+            GameObject posObj = positions.transform.GetChild(0).gameObject;
+            GameObject obj = PhotonNetwork.Instantiate(Path.Combine("Prefabs", "Player"), posObj.transform.position, posObj.transform.rotation, 0);
+        //}
+        //else
+        //{
+        //    GameObject posObj = positions.transform.GetChild(PlayersInGame - 1).gameObject;
+        //    GameObject obj2 = PhotonNetwork.Instantiate(Path.Combine("Prefabs", "Player"), posObj.transform.position, posObj.transform.rotation, 0);
+
+        //}
+        //CurrentPlayer = obj.GetComponent<PlayerMovement>();
     }
     
     private IEnumerator C_SetPing()
@@ -85,6 +98,7 @@ public class PlayerNetwork : MonoBehaviour {
 
         yield break;
     }
+
 
     //When connected to the master server (photon).
     private void OnConnectedToMaster()
