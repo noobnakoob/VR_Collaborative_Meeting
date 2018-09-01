@@ -9,7 +9,7 @@ public class PlayerListing : MonoBehaviour
 
     [SerializeField]
     private Text _playerName;
-    private Text PlayerName
+    public Text PlayerName
     {
         get { return _playerName; }
     }

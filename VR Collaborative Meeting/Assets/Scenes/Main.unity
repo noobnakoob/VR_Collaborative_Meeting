@@ -264,7 +264,6 @@ GameObject:
   m_Component:
   - component: {fileID: 454673652}
   - component: {fileID: 454673651}
-  - component: {fileID: 454673650}
   - component: {fileID: 454673649}
   - component: {fileID: 454673648}
   m_Layer: 0
@@ -282,13 +281,6 @@ AudioListener:
   m_GameObject: {fileID: 454673647}
   m_Enabled: 1
 --- !u!124 &454673649
-Behaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 454673647}
-  m_Enabled: 1
---- !u!92 &454673650
 Behaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -741,7 +733,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 0, y: 0.000037924234}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0, y: 1}
 --- !u!114 &714990021

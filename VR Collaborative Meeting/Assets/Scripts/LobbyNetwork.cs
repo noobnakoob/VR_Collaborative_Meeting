@@ -1,6 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class LobbyNetwork : MonoBehaviour
 {
@@ -11,7 +9,7 @@ public class LobbyNetwork : MonoBehaviour
         if (!PhotonNetwork.connected)
         {
             print("Connecting to server..");
-            PhotonNetwork.ConnectUsingSettings("0.0.0");
+            PhotonNetwork.ConnectUsingSettings("1.0.0");
         }
     }
 

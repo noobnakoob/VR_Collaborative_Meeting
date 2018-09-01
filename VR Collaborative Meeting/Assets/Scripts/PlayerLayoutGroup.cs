@@ -4,6 +4,12 @@ using UnityEngine;
 
 public class PlayerLayoutGroup : MonoBehaviour
 {
+    public static PlayerLayoutGroup Instance;
+
+    private void Awake()
+    {
+        Instance = this;
+    }
 
     [SerializeField]
     private GameObject _playerListingPrefab;
@@ -13,7 +19,7 @@ public class PlayerLayoutGroup : MonoBehaviour
     }
 
     private List<PlayerListing> _playerListings = new List<PlayerListing>();
-    private List<PlayerListing> PlayerListings
+    public List<PlayerListing> PlayerListings
     {
         get { return _playerListings; }
     }

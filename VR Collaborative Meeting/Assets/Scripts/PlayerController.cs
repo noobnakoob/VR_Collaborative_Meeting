@@ -1,23 +1,48 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
-public class PlayerController : MonoBehaviour {
-    public float speed = 3.0F;
-    void Update()
+public class PlayerController : Photon.MonoBehaviour
+{
+    [SerializeField]
+    private GameObject _head;
+    private GameObject Head
     {
-        float forward = Input.GetAxis("Vertical") * speed;
-        float side = Input.GetAxis("Horizontal") * speed;
-        forward *= Time.deltaTime;
-        side *= Time.deltaTime;
-        Vector3 camForward = Vector3.Scale(Camera.main.transform.right, new Vector3(1, 0, 1)).normalized;
-        Vector3 camSide = Vector3.Scale(-Camera.main.transform.forward, new Vector3(1, 0, 1)).normalized;
-        Vector3 move = forward * camForward + side * camSide;
-        transform.Translate(move);
+        get { return _head; }
+    }
+    
+    private PhotonView PhotonView;
+    private readonly float speed = 3.0f;
+    private Vector3 TargetPosition;
+    private Quaternion TargetRotation;
 
+    private void Awake()
+    {
+        PhotonView = GetComponent<PhotonView>();
+    }
+
+    void LateUpdate()
+    {
+        if (PhotonView.isMine)
+            CheckInput();
+    }
+
+    void CheckInput()
+    {
+        float forward = Input.GetAxis("Vertical");
+
+        Head.transform.rotation = Camera.main.transform.rotation;
+        transform.rotation = Quaternion.Euler(0f, Camera.main.transform.rotation.eulerAngles.y, 0f);
+
+        Camera.main.transform.parent.position = new Vector3(transform.position.x,
+            Camera.main.transform.parent.transform.position.y,
+            transform.position.z);
+
+        transform.position += Vector3.Scale(Camera.main.transform.forward, new Vector3(1f, 0f, 1f)) * (forward * speed * Time.deltaTime);
+
+#if UNITY_EDITOR
         if (Input.GetKey(KeyCode.E))
-            Camera.main.transform.Rotate(new Vector3(0f, speed ,0f));
+            Camera.main.transform.Rotate(new Vector3(0f, speed, 0f));
         else if (Input.GetKey(KeyCode.Q))
             Camera.main.transform.Rotate(new Vector3(0f, -speed, 0f));
+#endif
     }
 }

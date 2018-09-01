@@ -21,7 +21,7 @@ public class PlayerNetwork : MonoBehaviour {
         PhotonView = GetComponent<PhotonView>();
 
         PlayerName = "Client#" + Random.Range(1000, 9999);
-
+        
         PhotonNetwork.sendRate = 60;
         PhotonNetwork.sendRateOnSerialize = 30;
 
@@ -71,19 +71,11 @@ public class PlayerNetwork : MonoBehaviour {
     [PunRPC]
     private void RPC_CreatePlayer()
     {
-        GameObject positions = GameObject.FindGameObjectWithTag("Respawn");
-        //if (PhotonNetwork.isMasterClient)
-        //{
-            GameObject posObj = positions.transform.GetChild(0).gameObject;
-            GameObject obj = PhotonNetwork.Instantiate(Path.Combine("Prefabs", "Player"), posObj.transform.position, posObj.transform.rotation, 0);
-        //}
-        //else
-        //{
-        //    GameObject posObj = positions.transform.GetChild(PlayersInGame - 1).gameObject;
-        //    GameObject obj2 = PhotonNetwork.Instantiate(Path.Combine("Prefabs", "Player"), posObj.transform.position, posObj.transform.rotation, 0);
+        int ID = PlayerLayoutGroup.Instance.PlayerListings.FindIndex(player => player.PlayerName.text == PlayerName);
 
-        //}
-        //CurrentPlayer = obj.GetComponent<PlayerMovement>();
+        GameObject positions = GameObject.FindGameObjectWithTag("Respawn");
+        GameObject posObj = positions.transform.GetChild(ID).gameObject;
+        PhotonNetwork.Instantiate(Path.Combine("Prefabs", "Player"), posObj.transform.position, posObj.transform.rotation, 0);
     }
     
     private IEnumerator C_SetPing()
@@ -107,7 +99,4 @@ public class PlayerNetwork : MonoBehaviour {
             StopCoroutine(m_pingCoroutine);
         m_pingCoroutine = StartCoroutine(C_SetPing());
     }
-
 }
-
-
