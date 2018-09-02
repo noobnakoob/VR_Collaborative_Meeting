@@ -4,7 +4,6 @@ using UnityEngine.UI;
 
 public class PlayerListing : MonoBehaviour
 {
-
     public PhotonPlayer PhotonPlayer { get; private set; }
 
     [SerializeField]
@@ -41,5 +40,4 @@ public class PlayerListing : MonoBehaviour
 
         yield break;
     }
-
 }

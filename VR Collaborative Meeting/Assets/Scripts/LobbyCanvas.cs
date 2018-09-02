@@ -17,6 +17,7 @@ public class LobbyCanvas : MonoBehaviour {
         }
         else
         {
+            LogLayoutGroup.Instance.AddNewLog("Join room failed.");
             print("Join room failed.");
         }
     }

@@ -94,10 +94,15 @@ public class PlayerLayoutGroup : MonoBehaviour
 
         PhotonNetwork.room.IsOpen = !PhotonNetwork.room.IsOpen;
         PhotonNetwork.room.IsVisible = PhotonNetwork.room.IsOpen;
+        if (PhotonNetwork.room.IsOpen)
+            LogLayoutGroup.Instance.AddNewLog("Room in now open.");
+        else
+            LogLayoutGroup.Instance.AddNewLog("Room in now closed.");
     }
 
     public void OnClickLeaveRoom()
     {
+        LogLayoutGroup.Instance.AddNewLog("You have left the room.");
         PhotonNetwork.LeaveRoom();
     }
 }

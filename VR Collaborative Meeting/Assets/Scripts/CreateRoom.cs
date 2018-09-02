@@ -10,22 +10,47 @@ public class CreateRoom : MonoBehaviour
         get { return _roomName; }
     }
 
+    [SerializeField]
+    private Text _clientNumber;
+    private Text ClientNumber
+    {
+        get { return _clientNumber; }
+    }
+
     public void OnClick_CreateRoom()
     {
-        RoomOptions roomOptions = new RoomOptions() { IsVisible = true, IsOpen = true, MaxPlayers = 4 };
-
-        if (PhotonNetwork.CreateRoom(RoomName.text, roomOptions, TypedLobby.Default))
+        if (ClientNumber.text != "")
         {
-            print("create room successfully sent.");
+            if (int.Parse(ClientNumber.text) > 1)
+            {
+                RoomOptions roomOptions = new RoomOptions() { IsVisible = true, IsOpen = true, MaxPlayers = byte.Parse(ClientNumber.text) };
+
+                if (RoomName.text != "")
+                {
+                    if (PhotonNetwork.CreateRoom(RoomName.text, roomOptions, TypedLobby.Default))
+                    {
+                        LogLayoutGroup.Instance.AddNewLog("Create room successfully sent.");
+                        print("create room successfully sent.");
+                    }
+                    else
+                    {
+                        LogLayoutGroup.Instance.AddNewLog("Create room failed to send.");
+                        print("create room failed to send");
+                    }
+                }
+                else
+                    LogLayoutGroup.Instance.AddNewLog("Enter room name first.");
+            }
+            else
+                LogLayoutGroup.Instance.AddNewLog("Client number must be greater than 1.");
         }
         else
-        {
-            print("create room failed to send");
-        }
+            LogLayoutGroup.Instance.AddNewLog("Client number must be greater than 1.");        
     }
 
     private void OnPhotonCreateRoomFailed(object[] codeAndMessage)
     {
+        LogLayoutGroup.Instance.AddNewLog("create room failed: " + codeAndMessage[1]);
         print("create room failed: " + codeAndMessage[1]);
     }
 }
