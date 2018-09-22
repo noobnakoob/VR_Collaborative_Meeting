@@ -57,8 +57,6 @@ namespace GracesGames.SimpleFileBrowser.Scripts.UI {
 		// Game object and InputField that represents the name of the file to save
 		private GameObject _saveFileText;
 
-		private InputField _saveFileTextInputFile;
-
 		// Game object (Text) that represents the name of the file to load
 		private GameObject _loadFileText;
 
@@ -108,47 +106,21 @@ namespace GracesGames.SimpleFileBrowser.Scripts.UI {
 		private void SetupTextLabels() {
 			// Find the path and file label (path label optional in Portrait UI)
 			GameObject pathLabel = GameObject.Find("PathLabel");
-			//GameObject fileLabel = Utilities.FindGameObjectOrError("FileLabel");
 
 			// Find pathText game object to update path on clicks
 			_pathText = Utilities.FindGameObjectOrError("PathText");
-			// Find loadText game object to update load file text on clicks
-			//_loadFileText = Utilities.FindGameObjectOrError("LoadFileText");
-
-			// Find saveFileText game object to update save file text 
-			// and hook up onValueChanged listener to check the name using CheckValidFileName method
-			//_saveFileText = Utilities.FindGameObjectOrError("SaveFileText");
-			//_saveFileTextInputFile = _saveFileText.GetComponent<InputField>();
-			//_saveFileTextInputFile.onValueChanged.AddListener(_fileBrowser.CheckValidFileName);
-
+			
 			// Set font size for labels and texts
 			if (pathLabel != null) {
 				pathLabel.GetComponent<Text>().fontSize = PanelTextFontSize;
 			}
 
-			//fileLabel.GetComponent<Text>().fontSize = PanelTextFontSize;
 			_pathText.GetComponent<Text>().fontSize = PanelTextFontSize;
-			//_loadFileText.GetComponent<Text>().fontSize = PanelTextFontSize;
-			//foreach (Text textComponent in _saveFileText.GetComponentsInChildren<Text>()) {
-			//	textComponent.fontSize = PanelTextFontSize;
-			//}
 		}
 
 		// Setup parents object to hold directories and files (implemented in Landscape and Portrait version)
 		protected abstract void SetupParents();
-
-		// Setup search filter
-		//private void SetupSearchInputField() {
-		//	// Find search input field and get input field component
-		//	// and hook up onValueChanged listener to update search results on value change
-		//	_searchInputField = Utilities.FindGameObjectOrError("SearchInputField").GetComponent<InputField>();
-		//	foreach (Text textComponent in _searchInputField.GetComponentsInChildren<Text>()) {
-		//		textComponent.fontSize = PanelTextFontSize;
-		//	}
-
-		//	_searchInputField.onValueChanged.AddListener(_fileBrowser.UpdateSearchFilter);
-		//}
-
+        
 		// Sets the height of a GridLayoutGroup located in the game object (parent of directies and files object)
 		protected void SetButtonParentHeight(GameObject parent, int height) {
 			Vector2 cellSize = parent.GetComponent<GridLayoutGroup>().cellSize;
@@ -165,12 +137,6 @@ namespace GracesGames.SimpleFileBrowser.Scripts.UI {
 		public void UpdatePathText(string newPath) {
 			_pathText.GetComponent<Text>().text = newPath;
 		}
-
-		// Updates the input field value with a file name and extension
-		public void SetFileNameInputField(string fileName, string fileExtension) {
-			_saveFileTextInputFile.text = fileName + "." + fileExtension;
-		}
-
 
 		// Resets the directories and files parent game objects
 		public void ResetParents() {
@@ -205,7 +171,7 @@ namespace GracesGames.SimpleFileBrowser.Scripts.UI {
 
 			SetupButton(button, Path.GetFileName(file), FilesParent.transform);
 			// Setup FileButton script for file button (handles click and double click event)
-			button.GetComponent<FileButton>().Setup(_fileBrowser, file, button.GetComponent<Button>().interactable);
+			button.GetComponent<FileButton>().Setup(_fileBrowser, file);
 		}
 
 		// Generic method used to extract common code for creating a directory or file button

@@ -82,11 +82,11 @@ namespace GracesGames.SimpleFileBrowser.Scripts {
 		// Unity Action Event for selecting a file
 		public event Action<string> OnFileSelect = delegate { };
 
-		// ----- METHODS -----
-
-		// Method used to setup the file browser
-		// Requires a view mode to setup the UI and allows a starting path
-		public void SetupFileBrowser(ViewMode newViewMode, string startPath = "") {
+        // ----- METHODS -----
+        GameObject fileBrowserUi;
+        // Method used to setup the file browser
+        // Requires a view mode to setup the UI and allows a starting path
+        public void SetupFileBrowser(ViewMode newViewMode, string startPath = "") {
 			// Set the view mode (landscape or portrait)
 			ViewMode = newViewMode;
 
@@ -98,7 +98,7 @@ namespace GracesGames.SimpleFileBrowser.Scripts {
                 GameObject userIterfacePrefab = FileBrowserPortraitUiPrefab;
 
                     //ViewMode == ViewMode.Portrait ? FileBrowserPortraitUiPrefab : FileBrowserLandscapeUiPrefab;
-				GameObject fileBrowserUi = Instantiate(userIterfacePrefab, uiCanvas.transform, false);
+				fileBrowserUi = Instantiate(userIterfacePrefab, uiCanvas.transform, false);
 				_uiScript = fileBrowserUi.GetComponent<UserInterface>();
 				_uiScript.Setup(this);
 			} else {
@@ -380,15 +380,17 @@ namespace GracesGames.SimpleFileBrowser.Scripts {
 		public void FileClick(string clickedFile) {
 			// When in save mode, update the save name to the clicked file name
 			// Else update the current file text
-			if (_mode == FileBrowserMode.Save) {
-				string clickedFileName = Path.GetFileNameWithoutExtension(clickedFile);
-				CheckValidFileName(clickedFileName);
-				_uiScript.SetFileNameInputField(clickedFileName, _fileExtensions[0]);
-			} else {
+			//if (_mode == FileBrowserMode.Save) {
+			//	string clickedFileName = Path.GetFileNameWithoutExtension(clickedFile);
+			//	CheckValidFileName(clickedFileName);
+			//	_uiScript.SetFileNameInputField(clickedFileName, _fileExtensions[0]);
+			//} else {
 				_currentFile = clickedFile;
-			}
-
-			UpdateFileBrowser();
+            Debug.Log(clickedFile);
+            //}
+            DemoCaller.Instance.OnFileSelect(clickedFile);
+            Destroy(fileBrowserUi);
+			//UpdateFileBrowser();
 		}
 
 		// Opens a file browser in save mode

@@ -239,7 +239,6 @@
     <Compile Include="Assets\Scripts\RoomLayoutGroup.cs" />
     <Compile Include="Assets\Scripts\RoomListing.cs" />
     <Compile Include="Assets\Scripts\RoomSrcipt.cs" />
-    <Compile Include="Assets\Scripts\SlideManager.cs" />
     <None Include="Assets\Photon Unity Networking\link.xml" />
     <None Include="Assets\GoogleVR\Shaders\GvrUIOverlayFont.shader" />
     <None Include="Assets\PUNVoice\readme.txt" />

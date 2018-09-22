@@ -14,6 +14,8 @@ namespace GracesGames.SimpleFileBrowser.Scripts {
 		// Use the file browser prefab
 		public GameObject FileBrowserPrefab;
 
+        public GameObject FileOpenButton;
+
 		// Define a file extension
 		public string[] FileExtensions;
 
@@ -23,68 +25,64 @@ namespace GracesGames.SimpleFileBrowser.Scripts {
 		// Label to display loaded text
 		private GameObject _loadedText;
 
-		// Variable to save intermediate input result
-		private string _textToSave;
-
 		public bool PortraitMode;
+        
+        public Image slide_Image;
 
-		// Find the input field, label objects and add a onValueChanged listener to the input field
-		private void Start() {
-            //_textToSaveInputField = GameObject.Find("TextToSaveInputField");
-            //_textToSaveInputField.GetComponent<InputField>().onValueChanged.AddListener(UpdateTextToSave);
+        private Texture2D current_Texture;
 
-            //_loadedText = GameObject.Find("LoadedText");
+        public static DemoCaller Instance;
 
-            //GameObject uiCanvas = GameObject.Find("Canvas");
-            //if (uiCanvas == null) {
-            //	Debug.LogError("Make sure there is a canvas GameObject present in the Hierarcy (Create UI/Canvas)");
-            //}
-            OpenFileBrowser(FileBrowserMode.Load);
+        private void Start()
+        {
+            Instance = this;
         }
 
-		// Updates the text to save with the new input (current text in input field)
-		//public void UpdateTextToSave(string text) {
-		//	_textToSave = text;
-		//}
+        public void OnOpenFile()
+        {
+            slide_Image.gameObject.SetActive(false);
+            OpenFileBrowser();
+        }
 
-		// Open the file browser using boolean parameter so it can be called in GUI
-		public void OpenFileBrowser(bool saving) {
-            OpenFileBrowser(saving ? FileBrowserMode.Save : FileBrowserMode.Load);
-		}
+        void CreateTextureFromFile(string path)
+        {
+            current_Texture = new Texture2D(0, 0);
+
+            if (File.Exists(path))
+            {
+                WWW www = new WWW(path);
+
+                www.LoadImageIntoTexture(current_Texture);
+                Sprite newSprite = Sprite.Create(current_Texture, new Rect(0, 0, current_Texture.width, current_Texture.height), new Vector2(0.5f, 0.5f));
+                slide_Image.gameObject.SetActive(true);
+                slide_Image.sprite = newSprite;
+            }
+            else
+                Debug.Log("Not");
+        }
+
+        public void OnFileSelect(string path)
+        {
+            FileOpenButton.SetActive(true);
+            CreateTextureFromFile(path);
+        }
+
+        public void EnterDirectory()
+        {
+            
+        }
 
 		// Open a file browser to save and load files
-		private void OpenFileBrowser(FileBrowserMode fileBrowserMode) {
-			// Create the file browser and name it
+		private void OpenFileBrowser() {
+            // Create the file browser and name it
+            FileOpenButton.SetActive(false);
 			GameObject fileBrowserObject = Instantiate(FileBrowserPrefab, transform);
 			fileBrowserObject.name = "FileBrowser";
 			// Set the mode to save or load
 			FileBrowser fileBrowserScript = fileBrowserObject.GetComponent<FileBrowser>();
 			fileBrowserScript.SetupFileBrowser(ViewMode.Portrait);
-			//if (fileBrowserMode == FileBrowserMode.Save) {
-			//	fileBrowserScript.SaveFilePanel("DemoText", FileExtensions);
-			//	// Subscribe to OnFileSelect event (call SaveFileUsingPath using path) 
-			//	fileBrowserScript.OnFileSelect += SaveFileUsingPath;
-			//} else {
-				fileBrowserScript.OpenFilePanel(FileExtensions);
-				// Subscribe to OnFileSelect event (call LoadFileUsingPath using path) 
-				fileBrowserScript.OnFileSelect += LoadFileUsingPath;
-			//}
-		}
-
-		// Saves a file with the textToSave using a path
-		private void SaveFileUsingPath(string path) {
-			// Make sure path and _textToSave is not null or empty
-			if (!String.IsNullOrEmpty(path) && !String.IsNullOrEmpty(_textToSave)) {
-				BinaryFormatter bFormatter = new BinaryFormatter();
-				// Create a file using the path
-				FileStream file = File.Create(path);
-				// Serialize the data (textToSave)
-				bFormatter.Serialize(file, _textToSave);
-				// Close the created file
-				file.Close();
-			} else {
-				Debug.Log("Invalid path or empty file given");
-			}
+			fileBrowserScript.OpenFilePanel(FileExtensions);
+			fileBrowserScript.OnFileSelect += LoadFileUsingPath;
 		}
 
 		// Loads a file using a path

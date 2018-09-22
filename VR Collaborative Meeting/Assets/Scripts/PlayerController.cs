@@ -43,6 +43,14 @@ public class PlayerController : Photon.MonoBehaviour
             Camera.main.transform.Rotate(new Vector3(0f, speed, 0f));
         else if (Input.GetKey(KeyCode.Q))
             Camera.main.transform.Rotate(new Vector3(0f, -speed, 0f));
+        else if (Input.GetKey(KeyCode.A))
+            Camera.main.transform.Rotate(new Vector3(0f, 0f, speed));
+        else if (Input.GetKey(KeyCode.D))
+            Camera.main.transform.Rotate(new Vector3(0f, 0f, -speed));
+        else if (Input.GetKey(KeyCode.Z))
+            Camera.main.transform.Rotate(new Vector3(speed, 0f, 0f));
+        else if (Input.GetKey(KeyCode.C))
+            Camera.main.transform.Rotate(new Vector3(-speed, 0f, 0f));
 #endif
     }
 }
