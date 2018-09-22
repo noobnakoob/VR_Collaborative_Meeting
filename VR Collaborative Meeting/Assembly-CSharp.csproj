@@ -243,16 +243,13 @@
     <None Include="Assets\Photon Unity Networking\link.xml" />
     <None Include="Assets\GoogleVR\Shaders\GvrUIOverlayFont.shader" />
     <None Include="Assets\PUNVoice\readme.txt" />
-    <None Include="Assets\GracesGames\SimpleFileBrowser\ReadMe.txt" />
     <None Include="Assets\GoogleVR\Shaders\GvrAdditiveOverlay.shader" />
-    <None Include="Assets\GracesGames\SimpleFileBrowser\DemoFiles\TextFileWithNewLines.txt" />
     <None Include="Assets\GracesGames\SimpleFileBrowser\Sprites\IconMonstrLicense.txt" />
     <None Include="Assets\GoogleVR\Shaders\GvrController.shader" />
     <None Include="Assets\GoogleVR\Shaders\GvrUnlitTransparentOverlay.shader" />
     <None Include="Assets\GoogleVR\Shaders\GvrUnlitTransparentOverlayColor.shader" />
     <None Include="Assets\GoogleVR\Plugins\Android\AndroidManifest-6DOF.xml" />
     <None Include="Assets\GracesGames\Third-Party Notices.txt" />
-    <None Include="Assets\GracesGames\SimpleFileBrowser\DemoFiles\DemoText.txt" />
     <None Include="Assets\GoogleVR\Shaders\Video\VideoUnlitShader.shader" />
     <None Include="Assets\GoogleVR\Shaders\GvrUnlitTextureOverlay.shader" />
     <None Include="Assets\PUNVoice\changelog.txt" />
