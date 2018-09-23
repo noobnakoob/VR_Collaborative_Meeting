@@ -1,4 +1,4 @@
-﻿using System;
+﻿using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -19,6 +19,10 @@ namespace GracesGames.SimpleFileBrowser.Scripts {
 		// Define a file extension
 		public string[] FileExtensions;
 
+        public GameObject loadingIndicator;
+        public GameObject nextSlideButton;
+        public GameObject previousSlideButton;
+
 		// Input field to get text to save
 		private GameObject _textToSaveInputField;
 
@@ -33,15 +37,21 @@ namespace GracesGames.SimpleFileBrowser.Scripts {
 
         public static DemoCaller Instance;
 
+        bool gazed;
+
         private void Start()
         {
             Instance = this;
         }
 
-        public void OnOpenFile()
+        public void OnGazeEnter()
         {
-            slide_Image.gameObject.SetActive(false);
-            OpenFileBrowser();
+            gazed = true;
+        }
+
+        public void OnGazeExit()
+        {
+            gazed = false;
         }
 
         void CreateTextureFromFile(string path)
@@ -63,43 +73,192 @@ namespace GracesGames.SimpleFileBrowser.Scripts {
 
         public void OnFileSelect(string path)
         {
-            FileOpenButton.SetActive(true);
-            CreateTextureFromFile(path);
+            LoadFileUsingPath(path);
         }
 
-        public void EnterDirectory()
+        public void OnOpenFileBrowser()
         {
-            
+            StartCoroutine(OpenFileBrowserRoutine());
         }
 
-		// Open a file browser to save and load files
-		private void OpenFileBrowser() {
+        // Open a file browser to save and load files
+        private IEnumerator OpenFileBrowserRoutine() {
             // Create the file browser and name it
-            FileOpenButton.SetActive(false);
-			GameObject fileBrowserObject = Instantiate(FileBrowserPrefab, transform);
-			fileBrowserObject.name = "FileBrowser";
-			// Set the mode to save or load
-			FileBrowser fileBrowserScript = fileBrowserObject.GetComponent<FileBrowser>();
-			fileBrowserScript.SetupFileBrowser(ViewMode.Portrait);
-			fileBrowserScript.OpenFilePanel(FileExtensions);
-			fileBrowserScript.OnFileSelect += LoadFileUsingPath;
+            yield return new WaitForSeconds(2f);
+
+            if (gazed)
+            {
+                slide_Image.gameObject.SetActive(false);
+
+                FileOpenButton.SetActive(false);
+                GameObject fileBrowserObject = Instantiate(FileBrowserPrefab, transform);
+                fileBrowserObject.name = "FileBrowser";
+                // Set the mode to save or load
+                FileBrowser fileBrowserScript = fileBrowserObject.GetComponent<FileBrowser>();
+                fileBrowserScript.SetupFileBrowser(ViewMode.Portrait);
+                fileBrowserScript.OpenFilePanel(FileExtensions);
+                fileBrowserScript.OnFileSelect += LoadFileUsingPath;
+            }
 		}
+
+        public void CloseFileBrowser()
+        {
+            slide_Image.gameObject.SetActive(false);
+            FileOpenButton.SetActive(true);
+        }
 
 		// Loads a file using a path
 		private void LoadFileUsingPath(string path) {
-			if (path.Length != 0) {
-				BinaryFormatter bFormatter = new BinaryFormatter();
-				// Open the file using the path
-				FileStream file = File.OpenRead(path);
-				// Convert the file from a byte array into a string
-				string fileData = bFormatter.Deserialize(file) as string;
-				// We're done working with the file so we can close it
-				file.Close();
-				// Set the LoadedText with the value of the file
-				_loadedText.GetComponent<Text>().text = "Loaded data: \n" + fileData;
-			} else {
+			if (path.Length != 0)
+            {
+                string[] extension = path.Split('.');
+
+                switch (extension[extension.Length - 1])
+                {
+                    case "jpg":
+                        CreateTextureFromFile(path);
+                        break;
+                    case "png":
+                        CreateTextureFromFile(path);
+                        break;
+                    case "pptx":
+                        LoadPPTXFromFile(path);
+                        break;
+
+                }
+                FileOpenButton.SetActive(true);
+            }
+            else {
 				Debug.Log("Invalid path given");
 			}
 		}
+
+        AndroidJavaClass pptxViewer;
+
+        private void LoadPPTXFromFile(string path)
+        {
+            AndroidJavaClass unityPlayer = new AndroidJavaClass("com.unity3d.player.UnityPlayer");
+            AndroidJavaObject currentActivity = unityPlayer.GetStatic<AndroidJavaObject>("currentActivity");
+
+            pptxViewer = new AndroidJavaClass("com.petar.ppt.pptxViewer");
+            pptxViewer.CallStatic("load", currentActivity, path);
+            StartCoroutine(LoadFirstSlide());
+        }
+
+        IEnumerator LoadFirstSlide()
+        {
+            string pathValue = "";
+            bool slideReady;
+            loadingIndicator.SetActive(true);
+            nextSlideButton.SetActive(false);
+            previousSlideButton.SetActive(false);
+
+            do
+            {
+                pathValue = pptxViewer.CallStatic<string>("getPrepareSlide");
+                yield return new WaitForSeconds(2f);
+
+                if (pathValue == "" || pathValue == null)
+                    slideReady = false;
+                else
+                    slideReady = true;
+            }
+            while (!slideReady);
+
+            if (slideReady)
+            {
+                Debug.Log(pathValue);
+                loadingIndicator.SetActive(false);
+                CreateTextureFromFile(pathValue);
+                nextSlideButton.SetActive(true);
+                previousSlideButton.SetActive(true);
+            }
+        }
+
+        public void OnNextSlide()
+        {
+            StartCoroutine(GenerateNextSlide());
+        }
+
+        public void OnPreviousSlide()
+        {
+            StartCoroutine(GeneratePreviousSlide());
+        }
+
+        IEnumerator GenerateNextSlide()
+        {
+            string pathValue = "";
+            bool slideReady;
+            bool slideLoadingInitialized = false;            
+
+            yield return new WaitForSeconds(2f);
+
+            if (gazed && !slideLoadingInitialized)
+            {
+                nextSlideButton.SetActive(false);
+                previousSlideButton.SetActive(false);
+
+                slideLoadingInitialized = true;
+                loadingIndicator.SetActive(true);
+                pptxViewer.CallStatic("prepareNextSlide");
+
+                do
+                {
+                    pathValue = pptxViewer.CallStatic<string>("getPrepareSlide");
+                    yield return new WaitForSeconds(2f);
+
+                    if (pathValue == "" || pathValue == null)
+                        slideReady = false;
+                    else
+                        slideReady = true;
+                }
+                while (!slideReady);
+
+                if (slideReady)
+                {
+                    loadingIndicator.SetActive(false);
+                    CreateTextureFromFile(pathValue);
+                    nextSlideButton.SetActive(true);
+                    previousSlideButton.SetActive(true);
+                }
+            }
+        }
+
+        IEnumerator GeneratePreviousSlide()
+        {
+            string pathValue = "";
+            bool slideReady;
+            bool slideLoadingInitialized = false;
+            yield return new WaitForSeconds(2f);
+
+            if (gazed && !slideLoadingInitialized)
+            {
+                nextSlideButton.SetActive(false);
+                previousSlideButton.SetActive(false);
+                loadingIndicator.SetActive(true);
+
+                pptxViewer.CallStatic("preparePreviosSlide");
+
+                do
+                {
+                    pathValue = pptxViewer.CallStatic<string>("getPrepareSlide");
+                    yield return new WaitForSeconds(2f);
+
+                    if (pathValue == "" || pathValue == null)
+                        slideReady = false;
+                    else
+                        slideReady = true;
+                }
+                while (!slideReady);
+
+                if (slideReady)
+                {
+                    loadingIndicator.SetActive(false);
+                    CreateTextureFromFile(pathValue);
+                    nextSlideButton.SetActive(true);
+                    previousSlideButton.SetActive(true);
+                }
+            }
+        }
 	}
 }

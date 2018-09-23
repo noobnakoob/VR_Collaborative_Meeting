@@ -1,14 +1,17 @@
 ﻿using UnityEngine;
 using UnityEngine.EventSystems;
 using System.Collections;
+using UnityEngine.UI;
 
 namespace GracesGames.SimpleFileBrowser.Scripts.UI {
 
     public class FileButton : MonoBehaviour {
 
+        public bool directory;
+
         // The file browser using this file button
         private FileBrowser _fileBrowser;
-
+        
         // The path of the button
         private string _path = "";
 
@@ -30,19 +33,23 @@ namespace GracesGames.SimpleFileBrowser.Scripts.UI {
         {
             gazed = true;
             StartCoroutine(ClickRoutine());
+            transform.GetChild(0).gameObject.GetComponent<Text>().color = Color.green;
         }
 
         public void OnGazeExit()
         {
             gazed = false;
+            transform.GetChild(0).gameObject.GetComponent<Text>().color = Color.white;
         }          
 
         private IEnumerator ClickRoutine()
         {
             yield return new WaitForSeconds(2f);
 
-            if (gazed)
+            if (gazed && !directory)
                 _fileBrowser.FileClick(_path);
+            else if (gazed && directory)
+                _fileBrowser.DirectoryClick(_path);
         }
     }
 }

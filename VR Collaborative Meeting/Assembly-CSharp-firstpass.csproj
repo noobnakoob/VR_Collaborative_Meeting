@@ -110,6 +110,7 @@
     <Compile Include="Assets\Plugins\PhotonVoiceApi\Platforms\Unity\WindowsAudioIn.cs" />
     <Compile Include="Assets\Plugins\WebSocket\WebSocket.cs" />
     <None Include="Assets\Plugins\PhotonVoiceApi\readme.txt" />
+    <None Include="Assets\Plugins\Android\AndroidManifest.xml" />
     <None Include="Assets\Plugins\Photon3Unity3D.xml" />
     <None Include="Assets\Plugins\release_history.txt" />
     <None Include="Assets\Plugins\libspeexdsp.bundle\build.txt" />

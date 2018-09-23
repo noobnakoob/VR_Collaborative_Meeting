@@ -3,7 +3,6 @@
 using System;
 using System.IO;
 using System.Linq;
-
 using GracesGames.Common.Scripts;
 using GracesGames.SimpleFileBrowser.Scripts.UI;
 
@@ -71,8 +70,6 @@ namespace GracesGames.SimpleFileBrowser.Scripts {
 		// Stacks to keep track for backward and forward navigation feature
 		private readonly FiniteStack<string> _backwardStack = new FiniteStack<string>();
 
-		private readonly FiniteStack<string> _forwardStack = new FiniteStack<string>();
-
 		// String array file extensions to filter results and save new files
 		private string[] _fileExtensions;
 
@@ -83,7 +80,6 @@ namespace GracesGames.SimpleFileBrowser.Scripts {
 		public event Action<string> OnFileSelect = delegate { };
 
         // ----- METHODS -----
-        GameObject fileBrowserUi;
         // Method used to setup the file browser
         // Requires a view mode to setup the UI and allows a starting path
         public void SetupFileBrowser(ViewMode newViewMode, string startPath = "") {
@@ -98,7 +94,7 @@ namespace GracesGames.SimpleFileBrowser.Scripts {
                 GameObject userIterfacePrefab = FileBrowserPortraitUiPrefab;
 
                     //ViewMode == ViewMode.Portrait ? FileBrowserPortraitUiPrefab : FileBrowserLandscapeUiPrefab;
-				fileBrowserUi = Instantiate(userIterfacePrefab, uiCanvas.transform, false);
+				GameObject fileBrowserUi = Instantiate(userIterfacePrefab, uiCanvas.transform, false);
 				_uiScript = fileBrowserUi.GetComponent<UserInterface>();
 				_uiScript.Setup(this);
 			} else {
@@ -155,51 +151,21 @@ namespace GracesGames.SimpleFileBrowser.Scripts {
 			return _mode;
 		}
 
-		// Returns to the previously selected directory (inverse of DirectoryForward)
-		public void DirectoryBackward() {
-			// See if there is anything on the backward stack
-			if (_backwardStack.Count > 0) {
-				// If so, push it to the forward stack
-				_forwardStack.Push(_currentPath);
-			}
-
-			// Get the last path entry
-			string backPath = _backwardStack.Pop();
-			if (backPath != null) {
-				// Set path and update the file browser
-				_currentPath = backPath;
-				UpdateFileBrowser();
-			}
-		}
-
-		// Goes forward to the previously selected directory (inverse of DirectoryBackward)
-		public void DirectoryForward() {
-			// See if there is anything on the redo stack
-			if (_forwardStack.Count > 0) {
-				// If so, push it to the backward stack
-				_backwardStack.Push(_currentPath);
-			}
-
-			// Get the last level entry
-			string forwardPath = _forwardStack.Pop();
-			if (forwardPath != null) {
-				// Set path and update the file browser
-				_currentPath = forwardPath;
-				UpdateFileBrowser();
-			}
-		}
-
 		// Moves one directory up and update file browser
 		// When there is no parent, show the drives of the computer
 		public void DirectoryUp() {
-			_backwardStack.Push(_currentPath);
-			if (!IsTopLevelReached()) {
-				_currentPath = Directory.GetParent(_currentPath).FullName;
-				UpdateFileBrowser();
-			} else {
-				UpdateFileBrowser(true);
-			}
-		}
+
+            _backwardStack.Push(_currentPath);
+            if (!IsTopLevelReached())
+            {
+                _currentPath = Directory.GetParent(_currentPath).FullName;
+                UpdateFileBrowser();
+            }
+            else
+            {
+                UpdateFileBrowser(true);
+            }
+        }
 
 		// Parent directory check as Android throws a permission error if it tries to go above the root external storage directory
 		private bool IsTopLevelReached() {
@@ -212,27 +178,17 @@ namespace GracesGames.SimpleFileBrowser.Scripts {
 
 		// Sends event on file browser close
 		// Then destroys the file browser
-		public void CloseFileBrowser() {
-			OnFileBrowserClose();
-			Destroy();
-		}
+		public void CloseFileBrowser()
+        {
+            OnFileBrowserClose();
+            Destroy();
+        }
 
 		// When a file is selected (save/load button clicked), 
 		// send an event
-		public void SelectFile() {
-			// When saving, send the path and new file name, else the selected file
-			//if (_mode == FileBrowserMode.Save) {
-			//	string inputFieldValue = _uiScript.GetSaveFileText();
-			//	// Additional check for invalid input field value
-			//	// Should never be true due to onValueChanged check with toggle on save button
-			//	if (String.IsNullOrEmpty(inputFieldValue)) {
-			//		Debug.LogError("Invalid file name given");
-			//	} else {
-			//		SendFileSelectEvent(_currentPath + "/" + inputFieldValue);
-			//	}
-			//} else {
-				SendFileSelectEvent(_currentFile);
-			//}
+		public void SelectFile()
+        {
+			SendFileSelectEvent(_currentFile);
 		}
 
 		// Sends event on file select using path
@@ -240,11 +196,6 @@ namespace GracesGames.SimpleFileBrowser.Scripts {
 		private void SendFileSelectEvent(string path) {
 			OnFileSelect(path);
 			Destroy();
-		}
-
-		// Checks the current value of the InputField. If it is an empty string, disable the save button
-		public void CheckValidFileName(string inputFieldValue) {
-			_uiScript.ToggleSelectFileButton(inputFieldValue != "");
 		}
 
 		// Updates the search filter and filters the UI
@@ -256,7 +207,6 @@ namespace GracesGames.SimpleFileBrowser.Scripts {
 		// Updates the file browser by updating the path, file name, directories and files
 		private void UpdateFileBrowser(bool topLevel = false) {
 			UpdatePathText();
-			//UpdateLoadFileText();
 			_uiScript.ResetParents();
 			BuildDirectories(topLevel);
 			BuildFiles();
@@ -267,11 +217,6 @@ namespace GracesGames.SimpleFileBrowser.Scripts {
 			_uiScript.UpdatePathText(_currentPath);
 		}
 
-		// Updates the file to load text
-		//private void UpdateLoadFileText() {
-		//	_uiScript.UpdateLoadFileText(_currentFile);
-		//}
-
 		// Creates a DirectoryButton for each directory in the current path
 		private void BuildDirectories(bool topLevel) {
 			// Get the directories
@@ -280,8 +225,6 @@ namespace GracesGames.SimpleFileBrowser.Scripts {
 			if (topLevel) {
 				if (IsWindowsPlatform()) {
 					directories = Directory.GetLogicalDrives();
-				} else if (IsMacOsPlatform()) {
-					directories = Directory.GetDirectories("/Volumes");
 				} else if (IsAndroidPlatform()) {
 					_currentPath = _rootAndroidPath;
 					directories = Directory.GetDirectories(_currentPath);
@@ -308,12 +251,6 @@ namespace GracesGames.SimpleFileBrowser.Scripts {
 
 		private bool IsAndroidPlatform() {
 			return Application.platform == RuntimePlatform.Android;
-		}
-
-		// Returns whether the application is run on a Mac Operating System
-		private bool IsMacOsPlatform() {
-			return (Application.platform == RuntimePlatform.OSXEditor ||
-			        Application.platform == RuntimePlatform.OSXPlayer);
 		}
 
 		// Creates a FileButton for each file in the current path
@@ -378,34 +315,11 @@ namespace GracesGames.SimpleFileBrowser.Scripts {
 
 		// When a file is click, validate and update the save file text or current file and update the file browser
 		public void FileClick(string clickedFile) {
-			// When in save mode, update the save name to the clicked file name
-			// Else update the current file text
-			//if (_mode == FileBrowserMode.Save) {
-			//	string clickedFileName = Path.GetFileNameWithoutExtension(clickedFile);
-			//	CheckValidFileName(clickedFileName);
-			//	_uiScript.SetFileNameInputField(clickedFileName, _fileExtensions[0]);
-			//} else {
-				_currentFile = clickedFile;
-            Debug.Log(clickedFile);
-            //}
+			
+			_currentFile = clickedFile;
             DemoCaller.Instance.OnFileSelect(clickedFile);
-            Destroy(fileBrowserUi);
-			//UpdateFileBrowser();
-		}
-
-		// Opens a file browser in save mode
-		// Requires a default file and an array of file extensions
-		//public void SaveFilePanel(string defaultName, string[] fileExtensions) {
-		//	// Make sure the file extension is not invalid, else set it to "" (no extension for the file to save)
-		//	if (fileExtensions == null || fileExtensions.Length == 0) {
-		//		fileExtensions = new string[1];
-		//		fileExtensions[0] = "";
-		//	}
-
-		//	_mode = FileBrowserMode.Save;
-		//	_uiScript.SetSaveMode(defaultName, fileExtensions[0]);
-		//	FilePanel(fileExtensions);
-		//}
+            CloseFileBrowser();
+        }
 
 		// Opens a file browser in load mode
 		// Requires a file extension used to filter the loadable files

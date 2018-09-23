@@ -1,7 +1,6 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
 
-using System;
 using System.IO;
 
 using GracesGames.Common.Scripts;
@@ -73,12 +72,10 @@ namespace GracesGames.SimpleFileBrowser.Scripts.UI {
 		public void Setup(FileBrowser fileBrowser) {
 			_fileBrowser = fileBrowser;
 			name = "FileBrowserUI";
-			//transform.localScale = new Vector3(UserInterfaceScale, UserInterfaceScale, 1f);
 			SetupDirectoryAndFilePrefab();
 			SetupClickListeners();
 			SetupTextLabels();
 			SetupParents();
-			//SetupSearchInputField();
 		}
 
 		// Sets the font size and color for the directory and file texts
@@ -90,16 +87,13 @@ namespace GracesGames.SimpleFileBrowser.Scripts.UI {
 		}
 
 		// Setup click listeners for buttons
-		private void SetupClickListeners() {
+		private void SetupClickListeners()
+        {
 			// Hook up Directory Navigation methods to Directory Navigation Buttons
-			//Utilities.FindButtonAndAddOnClickListener("DirectoryBackButton", _fileBrowser.DirectoryBackward);
-			//Utilities.FindButtonAndAddOnClickListener("DirectoryForwardButton", _fileBrowser.DirectoryForward);
-			//Utilities.FindButtonAndAddOnClickListener("DirectoryUpButton", _fileBrowser.DirectoryUp);
+			Utilities.FindButtonAndAddOnClickListener("DirectoryUpButton", _fileBrowser.DirectoryUp);
 
 			// Hook up CloseFileBrowser method to CloseFileBrowserButton
-			//Utilities.FindButtonAndAddOnClickListener("CloseFileBrowserButton", _fileBrowser.CloseFileBrowser);
-			// Hook up SelectFile method to SelectFileButton
-			//_selectFileButton = Utilities.FindButtonAndAddOnClickListener("SelectFileButton", _fileBrowser.SelectFile);
+			Utilities.FindButtonAndAddOnClickListener("CloseFileBrowserButton", _fileBrowser.CloseFileBrowser);
 		}
 
 		// Setup path, load and save file text
@@ -128,14 +122,12 @@ namespace GracesGames.SimpleFileBrowser.Scripts.UI {
 			parent.GetComponent<GridLayoutGroup>().cellSize = cellSize;
 		}
 
-		// Toggles the SelectFileButton to ensure valid file names during save
-		public void ToggleSelectFileButton(bool enable) {
-			_selectFileButton.SetActive(enable);
-		}
-
 		// Update the path text
 		public void UpdatePathText(string newPath) {
-			_pathText.GetComponent<Text>().text = newPath;
+
+            string[] directories = newPath.Split('\\');
+
+			_pathText.GetComponent<Text>().text = directories[directories.Length - 1];
 		}
 
 		// Resets the directories and files parent game objects
@@ -157,8 +149,8 @@ namespace GracesGames.SimpleFileBrowser.Scripts.UI {
 		public void CreateDirectoryButton(string directory) {
 			GameObject button = Instantiate(DirectoryButtonPrefab, Vector3.zero, Quaternion.identity);
 			SetupButton(button, new DirectoryInfo(directory).Name, DirectoriesParent.transform);
-			// Setup FileBrowser DirectoryClick method to onClick event
-			button.GetComponent<Button>().onClick.AddListener(() => { _fileBrowser.DirectoryClick(directory); });
+            // Setup FileBrowser DirectoryClick method to onClick event
+            button.GetComponent<FileButton>().Setup(_fileBrowser, directory);
 		}
 
 		// Creates a file button given a file
