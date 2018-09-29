@@ -1,0 +1,165 @@
+<?xml version="1.0" encoding="utf-8"?>
+<items version="2" >
+
+    <item
+        is-multidex="false"
+        jar="C:\Users\PETAR\Documents\GitHub\VR_Collaborative_Meeting\VR Collaborative Meeting\Temp\gradleOut\libs\unity-classes.jar"
+        jumboMode="false"
+        min-sdk-version="19"
+        optimize="true"
+        revision="28.0.2"
+        sha1="43706e370109df2ccb0f989af704e2ce0e88a1fc">
+        <dex dex="C:\Users\PETAR\Documents\GitHub\VR_Collaborative_Meeting\VR Collaborative Meeting\Temp\gradleOut\build\intermediates\transforms\preDex\release\2.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="C:\Users\PETAR\.gradle\caches\transforms-1\files-1.1\unitygvr.aar\0d1e022e9d2c6e1c913d020341f7e137\jars\classes.jar"
+        jumboMode="false"
+        min-sdk-version="19"
+        optimize="true"
+        revision="28.0.2"
+        sha1="36e70259b99d30e8bd89f2246a70d44a53cb309f">
+        <dex dex="C:\Users\PETAR\Documents\GitHub\VR_Collaborative_Meeting\VR Collaborative Meeting\Temp\gradleOut\build\intermediates\transforms\preDex\release\18.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="C:\Users\PETAR\.gradle\caches\transforms-1\files-1.1\pptviewer.aar\4f9029af5c825ea441e3b0f0654e153c\jars\libs\android-pre-support-v4.jar"
+        jumboMode="false"
+        min-sdk-version="19"
+        optimize="true"
+        revision="28.0.2"
+        sha1="b7e14fb05b2c04f3d69a173d2aa843ffc95a64fc">
+        <dex dex="C:\Users\PETAR\Documents\GitHub\VR_Collaborative_Meeting\VR Collaborative Meeting\Temp\gradleOut\build\intermediates\transforms\preDex\release\9.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="C:\Users\PETAR\.gradle\caches\transforms-1\files-1.1\pptviewer.aar\4f9029af5c825ea441e3b0f0654e153c\jars\libs\schemaorg_apache_xmlbeans_new.jar"
+        jumboMode="false"
+        min-sdk-version="19"
+        optimize="true"
+        revision="28.0.2"
+        sha1="99f4499701cb5115ec30afe4f6455b1c5372f733">
+        <dex dex="C:\Users\PETAR\Documents\GitHub\VR_Collaborative_Meeting\VR Collaborative Meeting\Temp\gradleOut\build\intermediates\transforms\preDex\release\15.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="C:\Users\PETAR\.gradle\caches\transforms-1\files-1.1\pptviewer.aar\4f9029af5c825ea441e3b0f0654e153c\jars\libs\commons-codec-1.5.jar"
+        jumboMode="false"
+        min-sdk-version="19"
+        optimize="true"
+        revision="28.0.2"
+        sha1="3c6d4117da6677f4eddfdcfb53b3f5621843f5a8">
+        <dex dex="C:\Users\PETAR\Documents\GitHub\VR_Collaborative_Meeting\VR Collaborative Meeting\Temp\gradleOut\build\intermediates\transforms\preDex\release\10.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="C:\Users\PETAR\.gradle\caches\transforms-1\files-1.1\gvr.aar\c4a12249d512585b7b34f12083758c61\jars\classes.jar"
+        jumboMode="false"
+        min-sdk-version="19"
+        optimize="true"
+        revision="28.0.2"
+        sha1="126e08c2ed88b671f7b1d0994a107719bd97fd32">
+        <dex dex="C:\Users\PETAR\Documents\GitHub\VR_Collaborative_Meeting\VR Collaborative Meeting\Temp\gradleOut\build\intermediates\transforms\preDex\release\7.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="C:\Users\PETAR\.gradle\caches\transforms-1\files-1.1\pptviewer.aar\4f9029af5c825ea441e3b0f0654e153c\jars\libs\log4j-1.2.13.jar"
+        jumboMode="false"
+        min-sdk-version="19"
+        optimize="true"
+        revision="28.0.2"
+        sha1="0e87481634ad5c85d5b51183b91f0e64cf6fe0ee">
+        <dex dex="C:\Users\PETAR\Documents\GitHub\VR_Collaborative_Meeting\VR Collaborative Meeting\Temp\gradleOut\build\intermediates\transforms\preDex\release\14.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="C:\Users\PETAR\.gradle\caches\transforms-1\files-1.1\audioinaec.aar\392c4cdf965f25a176a24e2a4208d758\jars\classes.jar"
+        jumboMode="false"
+        min-sdk-version="19"
+        optimize="true"
+        revision="28.0.2"
+        sha1="9f31cce078168b08ad0b7480216ec9807319285e">
+        <dex dex="C:\Users\PETAR\Documents\GitHub\VR_Collaborative_Meeting\VR Collaborative Meeting\Temp\gradleOut\build\intermediates\transforms\preDex\release\3.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="C:\Users\PETAR\.gradle\caches\transforms-1\files-1.1\pptviewer.aar\4f9029af5c825ea441e3b0f0654e153c\jars\libs\xmlbeans-2.3.0.jar"
+        jumboMode="false"
+        min-sdk-version="19"
+        optimize="true"
+        revision="28.0.2"
+        sha1="6e73c01d21e3581a35bec4e983eddd39e0ed35d0">
+        <dex dex="C:\Users\PETAR\Documents\GitHub\VR_Collaborative_Meeting\VR Collaborative Meeting\Temp\gradleOut\build\intermediates\transforms\preDex\release\17.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="C:\Users\PETAR\.gradle\caches\transforms-1\files-1.1\gvr-permissionsupport-release.aar\2bfa33787a6f5da7467300913be20801\jars\classes.jar"
+        jumboMode="false"
+        min-sdk-version="19"
+        optimize="true"
+        revision="28.0.2"
+        sha1="89a665d716c3d6b2922d194ecd5aec7ae45beb3f">
+        <dex dex="C:\Users\PETAR\Documents\GitHub\VR_Collaborative_Meeting\VR Collaborative Meeting\Temp\gradleOut\build\intermediates\transforms\preDex\release\6.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="C:\Users\PETAR\.gradle\caches\transforms-1\files-1.1\pptviewer.aar\4f9029af5c825ea441e3b0f0654e153c\jars\libs\sjsxp.jar"
+        jumboMode="false"
+        min-sdk-version="19"
+        optimize="true"
+        revision="28.0.2"
+        sha1="928568036f05adb361c4d2129b1f724dcfcc7a34">
+        <dex dex="C:\Users\PETAR\Documents\GitHub\VR_Collaborative_Meeting\VR Collaborative Meeting\Temp\gradleOut\build\intermediates\transforms\preDex\release\16.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="C:\Users\PETAR\.gradle\caches\transforms-1\files-1.1\gvr-keyboard.aar\8afdff72d4ff37ac6d12f94b6482db77\jars\classes.jar"
+        jumboMode="false"
+        min-sdk-version="19"
+        optimize="true"
+        revision="28.0.2"
+        sha1="9dbb83f0fca00962e516ec6a098b69c7a07d0bf8">
+        <dex dex="C:\Users\PETAR\Documents\GitHub\VR_Collaborative_Meeting\VR Collaborative Meeting\Temp\gradleOut\build\intermediates\transforms\preDex\release\4.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="C:\Users\PETAR\Documents\GitHub\VR_Collaborative_Meeting\VR Collaborative Meeting\Temp\gradleOut\libs\libprotobuf-java-nano.jar"
+        jumboMode="false"
+        min-sdk-version="19"
+        optimize="true"
+        revision="28.0.2"
+        sha1="fcd53f117550c58490f29c2e27afca051626260d">
+        <dex dex="C:\Users\PETAR\Documents\GitHub\VR_Collaborative_Meeting\VR Collaborative Meeting\Temp\gradleOut\build\intermediates\transforms\preDex\release\1.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="C:\Users\PETAR\.gradle\caches\transforms-1\files-1.1\gvr-keyboardsupport-release.aar\4daca93d3d94ef2c21a7be22ff1ead21\jars\classes.jar"
+        jumboMode="false"
+        min-sdk-version="19"
+        optimize="true"
+        revision="28.0.2"
+        sha1="0e73b79f6ee536f7b2d00367f0a55dce11a3a61d">
+        <dex dex="C:\Users\PETAR\Documents\GitHub\VR_Collaborative_Meeting\VR Collaborative Meeting\Temp\gradleOut\build\intermediates\transforms\preDex\release\5.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="C:\Users\PETAR\.gradle\caches\transforms-1\files-1.1\pptviewer.aar\4f9029af5c825ea441e3b0f0654e153c\jars\classes.jar"
+        jumboMode="false"
+        min-sdk-version="19"
+        optimize="true"
+        revision="28.0.2"
+        sha1="dd1862f8f6da4b5c0b7db05afb05f7364adbe1b1">
+        <dex dex="C:\Users\PETAR\Documents\GitHub\VR_Collaborative_Meeting\VR Collaborative Meeting\Temp\gradleOut\build\intermediates\transforms\preDex\release\8.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="C:\Users\PETAR\.gradle\caches\transforms-1\files-1.1\pptviewer.aar\4f9029af5c825ea441e3b0f0654e153c\jars\libs\dom4j-1.6.1.jar"
+        jumboMode="false"
+        min-sdk-version="19"
+        optimize="true"
+        revision="28.0.2"
+        sha1="f9405e6e2fe3ed15472cbd313da8ac7e2b78248c">
+        <dex dex="C:\Users\PETAR\Documents\GitHub\VR_Collaborative_Meeting\VR Collaborative Meeting\Temp\gradleOut\build\intermediates\transforms\preDex\release\12.jar" />
+    </item>
+
+</items>

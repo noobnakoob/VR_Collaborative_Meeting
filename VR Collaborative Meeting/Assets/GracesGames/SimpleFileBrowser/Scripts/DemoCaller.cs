@@ -1,6 +1,8 @@
 ﻿using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEditor;
+using System;
 
 // Include these namespaces to use BinaryFormatter
 using System.Runtime.Serialization.Formatters.Binary;
@@ -42,6 +44,46 @@ namespace GracesGames.SimpleFileBrowser.Scripts {
         private void Start()
         {
             Instance = this;
+            String path = Application.persistentDataPath + "/test.pptx";
+            if (File.Exists(path))
+            {
+                Debug.Log("pptxViewer: File: " + path  + "Exist" );
+                LoadPPTXFromFile(path);
+            }
+            else
+            {
+                Debug.Log("pptxViewer: File: " + path + "NotExist");
+            }
+            path = Application.persistentDataPath + "\test.pptx";
+            if (File.Exists(path))
+            {
+                Debug.Log("pptxViewer: File: " + path + "Exist");
+                LoadPPTXFromFile(path);
+            }
+            else
+            {
+                Debug.Log("pptxViewer: File: " + path + "NotExist");
+            }
+            path = "/storage/emulated/0/test.pptx";
+            if (File.Exists(path))
+            {
+                Debug.Log("pptxViewer: File: " + path + "Exist");
+                LoadPPTXFromFile(path);
+            }
+            else
+            {
+                Debug.Log("pptxViewer: File: " + path + "NotExist");
+            }
+            /*path = "file:///storage/emulated/0/test.pptx";
+            if (File.Exists(path))
+            {
+                Debug.Log("pptxViewer: File: " + path + "Exist");
+                LoadPPTXFromFile(path);
+            }
+            else
+            {
+                Debug.Log("pptxViewer: File: " + path + "NotExist");
+            }*/
         }
 
         public void OnGazeEnter()
