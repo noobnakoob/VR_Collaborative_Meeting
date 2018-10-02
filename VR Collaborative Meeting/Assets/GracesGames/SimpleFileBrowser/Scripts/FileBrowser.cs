@@ -233,7 +233,7 @@ namespace GracesGames.SimpleFileBrowser.Scripts {
 
 
             // Apply Alphanumeric sort to directories
-            Array.Sort(directories, new AlphanumComparatorFast());
+           // Array.Sort(directories, new AlphanumComparatorFast());
 
             // For each directory in the current directory, create a DirectoryButton and hook up the DirectoryClick method
             foreach (string dir in directories) {
@@ -263,7 +263,7 @@ namespace GracesGames.SimpleFileBrowser.Scripts {
 			}
 
             // Apply Alphanumeric sort to files
-            Array.Sort(files, new AlphanumComparatorFast());
+            //Array.Sort(files, new AlphanumComparatorFast());
 
             // For each file in the current directory, create a FileButton and hook up the FileClick method
             foreach (string file in files) {

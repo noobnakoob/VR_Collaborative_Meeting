@@ -41,39 +41,41 @@ namespace GracesGames.SimpleFileBrowser.Scripts {
 
         bool gazed;
 
+        bool explorerOpened;
+
         private void Start()
         {
             Instance = this;
-            String path = Application.persistentDataPath + "/test.pptx";
-            if (File.Exists(path))
-            {
-                Debug.Log("pptxViewer: File: " + path  + "Exist" );
-                LoadPPTXFromFile(path);
-            }
-            else
-            {
-                Debug.Log("pptxViewer: File: " + path + "NotExist");
-            }
-            path = Application.persistentDataPath + "\test.pptx";
-            if (File.Exists(path))
-            {
-                Debug.Log("pptxViewer: File: " + path + "Exist");
-                LoadPPTXFromFile(path);
-            }
-            else
-            {
-                Debug.Log("pptxViewer: File: " + path + "NotExist");
-            }
-            path = "/storage/emulated/0/test.pptx";
-            if (File.Exists(path))
-            {
-                Debug.Log("pptxViewer: File: " + path + "Exist");
-                LoadPPTXFromFile(path);
-            }
-            else
-            {
-                Debug.Log("pptxViewer: File: " + path + "NotExist");
-            }
+            //String path = Application.persistentDataPath + "/test.pptx";
+            //if (File.Exists(path))
+            //{
+            //    Debug.Log("pptxViewer: File: " + path  + "Exist" );
+            //    LoadPPTXFromFile(path);
+            //}
+            //else
+            //{
+            //    Debug.Log("pptxViewer: File: " + path + "NotExist");
+            //}
+            //path = Application.persistentDataPath + "\test.pptx";
+            //if (File.Exists(path))
+            //{
+            //    Debug.Log("pptxViewer: File: " + path + "Exist");
+            //    LoadPPTXFromFile(path);
+            //}
+            //else
+            //{
+            //    Debug.Log("pptxViewer: File: " + path + "NotExist");
+            //}
+            //path = "/storage/emulated/0/test.pptx";
+            //if (File.Exists(path))
+            //{
+            //    Debug.Log("pptxViewer: File: " + path + "Exist");
+            //    LoadPPTXFromFile(path);
+            //}
+            //else
+            //{
+            //    Debug.Log("pptxViewer: File: " + path + "NotExist");
+            //}
             /*path = "file:///storage/emulated/0/test.pptx";
             if (File.Exists(path))
             {
@@ -96,15 +98,17 @@ namespace GracesGames.SimpleFileBrowser.Scripts {
             gazed = false;
         }
 
-        void CreateTextureFromFile(string path)
+        IEnumerator CreateTextureFromFile(string path)
         {
             current_Texture = new Texture2D(0, 0);
 
             if (File.Exists(path))
             {
-                WWW www = new WWW(path);
+                WWW www = new WWW("file://" + path);
+                yield return www;
 
                 www.LoadImageIntoTexture(current_Texture);
+
                 Sprite newSprite = Sprite.Create(current_Texture, new Rect(0, 0, current_Texture.width, current_Texture.height), new Vector2(0.5f, 0.5f));
                 slide_Image.gameObject.SetActive(true);
                 slide_Image.sprite = newSprite;
@@ -128,8 +132,9 @@ namespace GracesGames.SimpleFileBrowser.Scripts {
             // Create the file browser and name it
             yield return new WaitForSeconds(2f);
 
-            if (gazed)
+            if (gazed && !explorerOpened)
             {
+                explorerOpened = true;
                 slide_Image.gameObject.SetActive(false);
 
                 FileOpenButton.SetActive(false);
@@ -146,11 +151,14 @@ namespace GracesGames.SimpleFileBrowser.Scripts {
         public void CloseFileBrowser()
         {
             slide_Image.gameObject.SetActive(false);
+            explorerOpened = false;
             FileOpenButton.SetActive(true);
         }
 
 		// Loads a file using a path
-		private void LoadFileUsingPath(string path) {
+		private void LoadFileUsingPath(string path)
+        {
+            explorerOpened = false;
 			if (path.Length != 0)
             {
                 string[] extension = path.Split('.');
@@ -158,10 +166,10 @@ namespace GracesGames.SimpleFileBrowser.Scripts {
                 switch (extension[extension.Length - 1])
                 {
                     case "jpg":
-                        CreateTextureFromFile(path);
+                       StartCoroutine(CreateTextureFromFile(path));
                         break;
                     case "png":
-                        CreateTextureFromFile(path);
+                       StartCoroutine(CreateTextureFromFile(path));
                         break;
                     case "pptx":
                         LoadPPTXFromFile(path);
@@ -195,21 +203,20 @@ namespace GracesGames.SimpleFileBrowser.Scripts {
             nextSlideButton.SetActive(false);
             previousSlideButton.SetActive(false);
 
-            do
-            {
+            //do
+            //{
                 pathValue = pptxViewer.CallStatic<string>("getPrepareSlide");
-                yield return new WaitForSeconds(2f);
+                yield return pathValue;
 
                 if (pathValue == "" || pathValue == null)
                     slideReady = false;
                 else
                     slideReady = true;
-            }
-            while (!slideReady);
+            //}
+            //while (!slideReady);
 
             if (slideReady)
             {
-                Debug.Log(pathValue);
                 loadingIndicator.SetActive(false);
                 CreateTextureFromFile(pathValue);
                 nextSlideButton.SetActive(true);
@@ -244,17 +251,17 @@ namespace GracesGames.SimpleFileBrowser.Scripts {
                 loadingIndicator.SetActive(true);
                 pptxViewer.CallStatic("prepareNextSlide");
 
-                do
-                {
+                //do
+                //{
                     pathValue = pptxViewer.CallStatic<string>("getPrepareSlide");
-                    yield return new WaitForSeconds(2f);
+                    yield return pathValue;
 
                     if (pathValue == "" || pathValue == null)
                         slideReady = false;
                     else
                         slideReady = true;
-                }
-                while (!slideReady);
+                //}
+                //while (!slideReady);
 
                 if (slideReady)
                 {
@@ -281,17 +288,17 @@ namespace GracesGames.SimpleFileBrowser.Scripts {
 
                 pptxViewer.CallStatic("preparePreviosSlide");
 
-                do
-                {
+                //do
+                //{
                     pathValue = pptxViewer.CallStatic<string>("getPrepareSlide");
-                    yield return new WaitForSeconds(2f);
+                    yield return pathValue;
 
                     if (pathValue == "" || pathValue == null)
                         slideReady = false;
                     else
                         slideReady = true;
-                }
-                while (!slideReady);
+                //}
+                //while (!slideReady);
 
                 if (slideReady)
                 {

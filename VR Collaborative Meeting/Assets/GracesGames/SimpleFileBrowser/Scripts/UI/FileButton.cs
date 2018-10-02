@@ -44,7 +44,7 @@ namespace GracesGames.SimpleFileBrowser.Scripts.UI {
 
         private IEnumerator ClickRoutine()
         {
-            yield return new WaitForSeconds(2f);
+            yield return new WaitForSeconds(5f);
 
             if (gazed && !directory)
                 _fileBrowser.FileClick(_path);
