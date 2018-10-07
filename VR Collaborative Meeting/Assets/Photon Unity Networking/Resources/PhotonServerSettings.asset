@@ -47,4 +47,7 @@ MonoBehaviour:
   - RPC_LoadGameOthers
   - RPC_NewHealth
   - RPC_PerformTaunt
+  - ApplyTexture
+  - RPC_ApplyTexture
+  - RPC_RemoveImage
   DisableAutoOpenWizard: 1
