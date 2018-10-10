@@ -1,7 +1,8 @@
 Android
 PlayerPath?
-D:/Workspace/New folder
+C:/Users/Petar/test.apk
 SceneListBegin?
+Assets/Scenes/Splash.unity
 Assets/Scenes/Main.unity
 Assets/Scenes/Game.unity
 SceneListEnd?

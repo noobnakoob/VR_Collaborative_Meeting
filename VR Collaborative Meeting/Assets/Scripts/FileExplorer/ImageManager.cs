@@ -21,7 +21,7 @@ public class ImageManager : MonoBehaviour {
         if (PhotonNetwork.isMasterClient)
         {
             PhotonView.RPC("RPC_ApplyTexture", PhotonTargets.MasterClient, generated_Texture);
-            PhotonView.RPC("RPC_ApplyTexture", PhotonTargets.Others, generated_Texture);
+            //PhotonView.RPC("RPC_ApplyTexture", PhotonTargets.Others, generated_Texture);
         }
     }  
     

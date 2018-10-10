@@ -142,39 +142,60 @@ namespace GracesGames.SimpleFileBrowser.Scripts {
 		}
 
         AndroidJavaClass pptxViewer;
+        AndroidJavaClass pptxReeciver;
 
         private void LoadPPTXFromFile(string path)
         {
             AndroidJavaClass unityPlayer = new AndroidJavaClass("com.unity3d.player.UnityPlayer");
             AndroidJavaObject currentActivity = unityPlayer.GetStatic<AndroidJavaObject>("currentActivity");
 
-            pptxViewer = new AndroidJavaClass("com.petar.ppt.pptxViewer2");
+            pptxViewer = new AndroidJavaClass("com.petar.pptxplugins.PPTX");
             pptxViewer.CallStatic("load", currentActivity, path);
+            pptxReeciver = new AndroidJavaClass("com.petar.pptxplugins.PPTXReceiver");
+            pptxReeciver.CallStatic("createInstance", currentActivity);
             LoadFirstSlide();
         }
 
         void LoadFirstSlide()
         {
-            byte[] image_Array;
-            bool slideReady;
             loadingIndicator.SetActive(true);
             nextSlideButton.SetActive(false);
             previousSlideButton.SetActive(false);
-            image_Array = pptxViewer.CallStatic<byte[]>("getPrepareSlide");
+            //
+            StartCoroutine(GetPrepairSlide());
 
-            if (image_Array == null)
-                slideReady = false;
-            else
-                slideReady = true;
 
-            if (slideReady)
-            {
-                loadingIndicator.SetActive(false);
-                CreateTextureFromByteArray(image_Array);
-                nextSlideButton.SetActive(true);
-                previousSlideButton.SetActive(true);
-            }
         }
+
+        IEnumerator GetPrepairSlide()
+        {
+
+            byte[] image_Array = null;
+            bool slideReady=false;
+
+            while (!slideReady)
+            {
+                yield return new WaitForSeconds(4f);
+                pptxViewer.CallStatic("getPrepareSlide");
+                yield return new WaitForSeconds(1f);
+                image_Array = pptxReeciver.GetStatic<byte[]>("bytes");
+                if (image_Array == null)
+                    slideReady = false;
+                else
+                    slideReady = true;
+
+                if (slideReady)
+                {
+                    loadingIndicator.SetActive(false);
+                    CreateTextureFromByteArray(image_Array);
+                    nextSlideButton.SetActive(true);
+                    previousSlideButton.SetActive(true);
+                }
+        
+            }
+            pptxReeciver.SetStatic<byte[]>("bytes", null);
+        }
+        
 
         public void OnNextSlide()
         {
@@ -188,8 +209,8 @@ namespace GracesGames.SimpleFileBrowser.Scripts {
 
         IEnumerator GenerateNextSlide()
         {
-            byte[] image_Array;
-            bool slideReady;
+            //byte[] image_Array;
+            //bool slideReady;
             bool slideLoadingInitialized = false;            
 
             yield return new WaitForSeconds(2f);
@@ -202,28 +223,31 @@ namespace GracesGames.SimpleFileBrowser.Scripts {
                 slideLoadingInitialized = true;
                 loadingIndicator.SetActive(true);
                 pptxViewer.CallStatic("prepareNextSlide");
-                image_Array = pptxViewer.CallStatic<byte[]>("getPrepareSlide");
 
-                
-                if (image_Array == null)
-                    slideReady = false;
-                else
-                    slideReady = true;
+                StartCoroutine(GetPrepairSlide());
 
-                if (slideReady)
-                {
-                    loadingIndicator.SetActive(false);
-                    CreateTextureFromByteArray(image_Array);
-                    nextSlideButton.SetActive(true);
-                    previousSlideButton.SetActive(true);
-                }
+                //image_Array = pptxViewer.CallStatic<byte[]>("getPrepareSlide");
+
+
+                //if (image_Array == null)
+                //    slideReady = false;
+                //else
+                //    slideReady = true;
+
+                //if (slideReady)
+                //{
+                //    loadingIndicator.SetActive(false);
+                //    CreateTextureFromByteArray(image_Array);
+                //    nextSlideButton.SetActive(true);
+                //    previousSlideButton.SetActive(true);
+                //}
             }
         }
 
         IEnumerator GeneratePreviousSlide()
         {
-            byte[] image_Array;
-            bool slideReady;
+            //byte[] image_Array;
+            //bool slideReady;
             bool slideLoadingInitialized = false;
             yield return new WaitForSeconds(2f);
 
@@ -234,20 +258,22 @@ namespace GracesGames.SimpleFileBrowser.Scripts {
                 loadingIndicator.SetActive(true);
 
                 pptxViewer.CallStatic("preparePreviosSlide");
-                image_Array = pptxViewer.CallStatic<byte[]>("getPrepareSlide");
-                                
-                if (image_Array == null)
-                    slideReady = false;
-                else
-                    slideReady = true;
 
-                if (slideReady)
-                {
-                    loadingIndicator.SetActive(false);
-                    CreateTextureFromByteArray(image_Array);
-                    nextSlideButton.SetActive(true);
-                    previousSlideButton.SetActive(true);
-                }
+                StartCoroutine(GetPrepairSlide());
+                //image_Array = pptxViewer.CallStatic<byte[]>("getPrepareSlide");
+
+                //if (image_Array == null)
+                //    slideReady = false;
+                //else
+                //    slideReady = true;
+
+                //if (slideReady)
+                //{
+                //    loadingIndicator.SetActive(false);
+                //    CreateTextureFromByteArray(image_Array);
+                //    nextSlideButton.SetActive(true);
+                //    previousSlideButton.SetActive(true);
+                //}
             }
         }
 

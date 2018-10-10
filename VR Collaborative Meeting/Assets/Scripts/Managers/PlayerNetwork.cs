@@ -54,6 +54,7 @@ public class PlayerNetwork : MonoBehaviour {
     [PunRPC]
     private void RPC_LoadGameOthers()
     {
+        XRSettings.enabled = true;
         PhotonNetwork.LoadLevel(2);
     }
 
