@@ -59,8 +59,10 @@ namespace GracesGames.SimpleFileBrowser.Scripts {
             {
                 WWW www = new WWW("file://" + path);
                 yield return www;
+                Texture2D texture = new Texture2D(1, 1);
+                www.LoadImageIntoTexture(texture);
 
-                GetComponent<ImageManager>().GenerateTexture(www.bytes);
+                GetComponent<ImageManager>().GenerateTexture(texture);
             }
             else
                 Debug.Log("File doesnt exist on specified path!");
@@ -68,8 +70,11 @@ namespace GracesGames.SimpleFileBrowser.Scripts {
 
         void CreateTextureFromByteArray(byte[] texture_Array)
         {
+            Texture2D texture = new Texture2D(1, 1);
+            texture.LoadImage(texture_Array);
+
             if (texture_Array != null)
-                GetComponent<ImageManager>().GenerateTexture(texture_Array);
+                GetComponent<ImageManager>().GenerateTexture(texture);
             else
                 Debug.Log("Byte array not valid!");
         }
@@ -162,12 +167,12 @@ namespace GracesGames.SimpleFileBrowser.Scripts {
             nextSlideButton.SetActive(false);
             previousSlideButton.SetActive(false);
             //
-            StartCoroutine(GetPrepairSlide());
+            StartCoroutine(GetPrepareSlide());
 
 
         }
 
-        IEnumerator GetPrepairSlide()
+        IEnumerator GetPrepareSlide()
         {
 
             byte[] image_Array = null;
@@ -224,7 +229,7 @@ namespace GracesGames.SimpleFileBrowser.Scripts {
                 loadingIndicator.SetActive(true);
                 pptxViewer.CallStatic("prepareNextSlide");
 
-                StartCoroutine(GetPrepairSlide());
+                StartCoroutine(GetPrepareSlide());
 
                 //image_Array = pptxViewer.CallStatic<byte[]>("getPrepareSlide");
 
@@ -259,7 +264,7 @@ namespace GracesGames.SimpleFileBrowser.Scripts {
 
                 pptxViewer.CallStatic("preparePreviosSlide");
 
-                StartCoroutine(GetPrepairSlide());
+                StartCoroutine(GetPrepareSlide());
                 //image_Array = pptxViewer.CallStatic<byte[]>("getPrepareSlide");
 
                 //if (image_Array == null)

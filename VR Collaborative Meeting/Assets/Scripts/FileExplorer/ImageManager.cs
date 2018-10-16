@@ -8,20 +8,24 @@ public class ImageManager : MonoBehaviour {
     public static ImageManager Instance;
 
     PhotonView PhotonView;
+    public Image sharedImage;
 
-	// Use this for initialization
-	void Awake () {
+    // Use this for initialization
+    void Awake () {
 
         Instance = this;
         PhotonView = GameObject.Find("PlayerNetwork").GetComponent<PhotonView>();
     }
 
-    public void GenerateTexture(byte[] generated_Texture)
+    public void GenerateTexture(Texture2D texture)
     {        
         if (PhotonNetwork.isMasterClient)
         {
-            PhotonView.RPC("RPC_ApplyTexture", PhotonTargets.MasterClient, generated_Texture);
-            //PhotonView.RPC("RPC_ApplyTexture", PhotonTargets.Others, generated_Texture);
+            Sprite newSprite = Sprite.Create(texture, new Rect(0, 0, texture.width, texture.height), new Vector2(0.5f, 0.5f));
+            sharedImage.enabled = true;
+            sharedImage.sprite = newSprite;
+
+            PhotonView.RPC("RPC_ApplyTexture", PhotonTargets.Others, texture.EncodeToPNG());
         }
     }  
     
@@ -29,7 +33,7 @@ public class ImageManager : MonoBehaviour {
     {
         if (PhotonNetwork.isMasterClient)
         {
-            PhotonView.RPC("RPC_RemoveImage", PhotonTargets.MasterClient);
+            sharedImage.enabled = false;
             PhotonView.RPC("RPC_RemoveImage", PhotonTargets.Others);
         }
     }

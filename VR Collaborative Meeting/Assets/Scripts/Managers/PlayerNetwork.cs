@@ -64,7 +64,6 @@ public class PlayerNetwork : MonoBehaviour {
         PlayersInGame++;
         if (PlayersInGame == PhotonNetwork.playerList.Length)
         {
-            print("All players are in the game scene.");
             PhotonView.RPC("RPC_CreatePlayer", PhotonTargets.All);
             XRSettings.enabled = true;
         }
@@ -108,15 +107,13 @@ public class PlayerNetwork : MonoBehaviour {
         Texture2D texture = new Texture2D(1, 1);
         texture.LoadImage(data);
         Sprite newSprite = Sprite.Create(texture, new Rect(0, 0, texture.width, texture.height), new Vector2(0.5f, 0.5f));
-        Image sharedImage = GameObject.FindGameObjectWithTag("SharedImage").GetComponent<Image>();
-        sharedImage.enabled = true;
-        sharedImage.sprite = newSprite;
+        ImageManager.Instance.sharedImage.enabled = true;
+        ImageManager.Instance.sharedImage.sprite = newSprite;
     }
 
     [PunRPC]
     private void RPC_RemoveImage()
     {
-        Image sharedImage = GameObject.FindGameObjectWithTag("SharedImage").GetComponent<Image>();
-        sharedImage.enabled = false;
+        ImageManager.Instance.sharedImage.enabled = false;
     }
 }
