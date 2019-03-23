@@ -1,9 +1,9 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class RoomLayoutGroup : MonoBehaviour
 {
-
     [SerializeField]
     private GameObject _roomListingPrefab;
     private GameObject RoomListingPrefab
@@ -16,7 +16,6 @@ public class RoomLayoutGroup : MonoBehaviour
     {
         get { return _roomListingButtons; }
     }
-
 
     private void OnReceivedRoomListUpdate()
     {
@@ -75,5 +74,15 @@ public class RoomLayoutGroup : MonoBehaviour
             Destroy(roomListingObj);
         }
     }
-
+    
+    public void JoinRoomVoice(string roomName)
+    {
+        for (int i = 0; i < transform.childCount; i++)
+        {
+            if (transform.GetChild(i)
+                .gameObject.transform.GetChild(0)
+                .gameObject.GetComponent<Text>().text.Contains(roomName))
+                transform.GetChild(i).gameObject.GetComponent<Button>().onClick.Invoke();
+        }
+    }
 }

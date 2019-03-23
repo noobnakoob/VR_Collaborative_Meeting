@@ -38,6 +38,4 @@ public class RoomListing : MonoBehaviour
         RoomName = text;
         RoomNameText.text = RoomName;
     }
-
-
 }

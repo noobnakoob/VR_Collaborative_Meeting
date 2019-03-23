@@ -42,8 +42,18 @@ public class CreateRoom : MonoBehaviour
             LogLayoutGroup.Instance.AddNewLog("Client number must be greater than 1.");        
     }
 
+    public void SetRoomName(string roomName)
+    {
+        _roomName.transform.parent.gameObject.GetComponent<InputField>().text = roomName;
+    }
+
+    public void SetClientNumber(string number)
+    {
+        _clientNumber.transform.parent.gameObject.GetComponent<InputField>().text = number;
+    }
+
     private void OnPhotonCreateRoomFailed(object[] codeAndMessage)
     {
-        LogLayoutGroup.Instance.AddNewLog("create room failed: " + codeAndMessage[1]);
+        LogLayoutGroup.Instance.AddNewLog("Create room failed: " + codeAndMessage[1]);
     }
 }

@@ -41,10 +41,16 @@ public class PlayerController : Photon.MonoBehaviour
 
         transform.position += Vector3.Scale(Camera.main.transform.forward, new Vector3(1f, 0f, 1f)) * (forward * speed * Time.deltaTime);
 
-        if (Input.GetKey(KeyCode.Joystick1Button1))
+        if (Input.GetKeyUp(KeyCode.Joystick1Button0))
             PhotonVoiceRecorder.Transmit = true;
         else if (Input.GetKeyUp(KeyCode.Joystick1Button1))
             PhotonVoiceRecorder.Transmit = false;
+
+        // Test
+        if (Input.GetKey(KeyCode.Joystick1Button6))
+            Camera.main.transform.Rotate(new Vector3(0f, speed, 0f));
+        else if (Input.GetKey(KeyCode.Joystick1Button3))
+            Camera.main.transform.Rotate(new Vector3(0f, -speed, 0f));
 
 #if UNITY_EDITOR
         if (Input.GetKey(KeyCode.E))

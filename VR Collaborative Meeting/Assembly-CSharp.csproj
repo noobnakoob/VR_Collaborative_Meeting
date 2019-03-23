@@ -225,8 +225,8 @@
     <Compile Include="Assets\Scripts\Canvas\PlayerListing.cs" />
     <Compile Include="Assets\Scripts\Canvas\RoomLayoutGroup.cs" />
     <Compile Include="Assets\Scripts\Canvas\RoomListing.cs" />
-    <Compile Include="Assets\Scripts\FileExplorer\DemoCaller.cs" />
     <Compile Include="Assets\Scripts\FileExplorer\FileBrowser.cs" />
+    <Compile Include="Assets\Scripts\FileExplorer\FileBrowserManager.cs" />
     <Compile Include="Assets\Scripts\FileExplorer\FileButton.cs" />
     <Compile Include="Assets\Scripts\FileExplorer\FiniteStack.cs" />
     <Compile Include="Assets\Scripts\FileExplorer\ImageManager.cs" />
@@ -235,9 +235,10 @@
     <Compile Include="Assets\Scripts\FileExplorer\Utilities.cs" />
     <Compile Include="Assets\Scripts\Managers\DDOL.cs" />
     <Compile Include="Assets\Scripts\Managers\LobbyNetwork.cs" />
+    <Compile Include="Assets\Scripts\Managers\MainManager.cs" />
     <Compile Include="Assets\Scripts\Managers\PlayerController.cs" />
     <Compile Include="Assets\Scripts\Managers\PlayerNetwork.cs" />
-    <Compile Include="Assets\Scripts\Managers\RoomSrcipt.cs" />
+    <Compile Include="Assets\Scripts\Managers\RecognitionManager.cs" />
     <None Include="Assets\Photon Unity Networking\link.xml" />
     <None Include="Assets\GoogleVR\Shaders\GvrUIOverlayFont.shader" />
     <None Include="Assets\PUNVoice\readme.txt" />

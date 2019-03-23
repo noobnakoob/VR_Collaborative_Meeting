@@ -2,8 +2,7 @@
 
 public class CurrentRoomCanvas : MonoBehaviour
 {
-
-    public void OnClickStartSync()
+    public void OnClickStart()
     {
         if (!PhotonNetwork.isMasterClient)
             return;
@@ -11,7 +10,7 @@ public class CurrentRoomCanvas : MonoBehaviour
         PhotonNetwork.LoadLevel(2);
     }
 
-    public void OnClickStartDelayed()
+    public void OnClickStartAndLock()
     {
         if (!PhotonNetwork.isMasterClient)
             return;

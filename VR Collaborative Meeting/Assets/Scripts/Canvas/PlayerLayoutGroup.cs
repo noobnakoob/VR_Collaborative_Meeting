@@ -1,16 +1,8 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
 
 public class PlayerLayoutGroup : MonoBehaviour
 {
-    public static PlayerLayoutGroup Instance;
-
-    private void Awake()
-    {
-        Instance = this;
-    }
-
     [SerializeField]
     private GameObject _playerListingPrefab;
     private GameObject PlayerListingPrefab
@@ -29,7 +21,6 @@ public class PlayerLayoutGroup : MonoBehaviour
     {
         PhotonNetwork.LeaveRoom();
     }
-
 
     //Called by photon whenever you join a room.
     private void OnJoinedRoom()
@@ -59,7 +50,6 @@ public class PlayerLayoutGroup : MonoBehaviour
     {
         PlayerLeftRoom(photonPlayer);
     }
-
 
     private void PlayerJoinedRoom(PhotonPlayer photonPlayer)
     {

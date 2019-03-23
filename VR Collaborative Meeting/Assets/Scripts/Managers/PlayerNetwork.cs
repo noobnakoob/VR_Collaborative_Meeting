@@ -72,7 +72,7 @@ public class PlayerNetwork : MonoBehaviour {
     [PunRPC]
     private void RPC_CreatePlayer()
     {
-        int ID = PlayerLayoutGroup.Instance.PlayerListings.FindIndex(player => player.PlayerName.text == PlayerName);
+        int ID = MainCanvasManager.Instance.PlayerLayoutGroup.PlayerListings.FindIndex(player => player.PlayerName.text == PlayerName);
 
         GameObject positions = GameObject.FindGameObjectWithTag("Respawn");
         GameObject posObj = positions.transform.GetChild(ID).gameObject;
