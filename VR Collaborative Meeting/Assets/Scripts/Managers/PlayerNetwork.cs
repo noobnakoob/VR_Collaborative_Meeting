@@ -41,7 +41,6 @@ public class PlayerNetwork : MonoBehaviour {
     {
         bool fail = false;
         string bundleId = "com.petar.pptx";
-        Debug.Log(bundleId);
         AndroidJavaClass unityPlayer = new AndroidJavaClass("com.unity3d.player.UnityPlayer");
         AndroidJavaObject currentActivity = unityPlayer.GetStatic<AndroidJavaObject>("currentActivity");
         AndroidJavaObject packageManager = currentActivity.Call<AndroidJavaObject>("getPackageManager");
@@ -80,8 +79,7 @@ public class PlayerNetwork : MonoBehaviour {
     {
         string apkPath = Application.persistentDataPath + "/PPTXViewer.apk";
         string apkPathSA = Path.Combine(Application.streamingAssetsPath, "PPTXViewer.apk");
-        Debug.Log("Path to: " + apkPath);
-        Debug.Log("Path from: " + apkPathSA);
+        
         byte[] result = null;
         if (apkPathSA.Contains("://") || apkPathSA.Contains(":///"))
         {
@@ -91,8 +89,7 @@ public class PlayerNetwork : MonoBehaviour {
         }
         else
             result = File.ReadAllBytes(apkPathSA);
-
-        Debug.Log(result.Length);
+        
 
         if (!File.Exists(apkPath) || new FileInfo(apkPath).Length == 0)
         {
