@@ -21,9 +21,10 @@ public class ImageManager : MonoBehaviour {
         {
             Sprite newSprite = Sprite.Create(texture, new Rect(0, 0, texture.width, texture.height), new Vector2(0.5f, 0.5f));
             sharedImage.enabled = true;
-            sharedImage.sprite = newSprite;
+            sharedImage.sprite = null;
+            sharedImage.sprite = newSprite;            
 
-            PhotonView.RPC("RPC_ApplyTexture", PhotonTargets.Others, texture.EncodeToPNG());
+            PhotonView.RPC("RPC_ApplyTexture", PhotonTargets.Others, texture.EncodeToPNG());            
         }
     }  
     
@@ -31,8 +32,9 @@ public class ImageManager : MonoBehaviour {
     {
         if (PhotonNetwork.isMasterClient)
         {
+            sharedImage.sprite = null;
             sharedImage.enabled = false;
-            PhotonView.RPC("RPC_RemoveImage", PhotonTargets.Others);
+            PhotonView.RPC("RPC_RemoveImage", PhotonTargets.All);
         }
     }
 }

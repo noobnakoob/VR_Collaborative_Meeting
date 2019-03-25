@@ -2,6 +2,8 @@
 using UnityEngine;
 using System.IO;
 using UnityEngine.SceneManagement;
+using Assets.Scripts.Managers;
+using UnityEngine.XR;
 
 // Demo class to illustrate the usage of the FileBrowser script
 // Able to save and load files containing serialized data (e.g. text)
@@ -100,16 +102,136 @@ public class FileBrowserManager : MonoBehaviour {
     {
         if (File.Exists(path))
         {
-            WWW www = new WWW("file://" + path);
+            string pathHeader = "";
+
+#if UNITY_EDITOR
+            pathHeader = "file://";
+#elif UNITY_ANDROID
+            pathHeader = "file:///";
+#endif           
+
+            WWW www = new WWW(pathHeader + path);
             yield return www;
-            Texture2D texture = new Texture2D(1, 1);
+            Texture2D texture = null;            
+            texture = new Texture2D(1, 1);
             www.LoadImageIntoTexture(texture);
+            www.Dispose();
+            int width = texture.width;
+            int height = texture.height;
+
+            float scale = 1f;
+            if (width < height)
+            {
+                scale = height / 512f;
+                height = 512;
+                width = Mathf.RoundToInt(width / scale);
+
+            }
+            else
+            {
+                scale = width / 512f;
+                width = 512;
+                height = Mathf.RoundToInt(height / scale);
+            }
+
+            TextureScale.Bilinear(texture, width, height);
+            Debug.Log(texture.width + " " + texture.height);
 
             GetComponent<ImageManager>().GenerateTexture(texture);
         }
         else
             Debug.Log("File doesnt exist on specified path!");
     }
+
+    static void _gpu_scale(Texture2D src, int width, int height, FilterMode fmode)
+    {
+        //We need the source texture in VRAM because we render with it
+        src.filterMode = fmode;
+        src.Apply(true);
+
+        //Using RTT for best quality and performance. Thanks, Unity 5
+        RenderTexture rtt = new RenderTexture(width, height, 32);
+
+        //Set the RTT in order to render to it
+        Graphics.SetRenderTarget(rtt);
+
+        //Setup 2D matrix in range 0..1, so nobody needs to care about sized
+        GL.LoadPixelMatrix(0, 1, 1, 0);
+
+        //Then clear & draw the texture to fill the entire RTT.
+        GL.Clear(true, true, new Color(0, 0, 0, 0));
+        Graphics.DrawTexture(new Rect(0, 0, 1, 1), src);
+    }
+
+    Texture2D RescaleTexture(Texture2D pSource, float pScale)
+    {
+        //*** Variables
+        int i;
+
+        //*** Get All the source pixels
+        Color[] aSourceColor = pSource.GetPixels(0);
+        Vector2 vSourceSize = new Vector2(pSource.width, pSource.height);
+
+        //*** Calculate New Size
+        float xWidth = Mathf.RoundToInt((float)pSource.width * pScale);
+        float xHeight = Mathf.RoundToInt((float)pSource.height * pScale);
+
+        //*** Make New
+        Texture2D oNewTex = new Texture2D((int)xWidth, (int)xHeight, TextureFormat.RGBA32, false);
+
+        //*** Make destination array
+        int xLength = (int)xWidth * (int)xHeight;
+        Color[] aColor = new Color[xLength];
+
+        Vector2 vPixelSize = new Vector2(vSourceSize.x / xWidth, vSourceSize.y / xHeight);
+
+        //*** Loop through destination pixels and process
+        Vector2 vCenter = new Vector2();
+        for (i = 0; i < xLength; i++)
+        {
+
+            //*** Figure out x&y
+            float xX = (float)i % xWidth;
+            float xY = Mathf.Floor((float)i / xWidth);
+
+            //*** Calculate Center
+            vCenter.x = (xX / xWidth) * vSourceSize.x;
+            vCenter.y = (xY / xHeight) * vSourceSize.y;
+
+            //*** Do Based on mode
+            //*** Calculate grid around point
+            int xXFrom = (int)Mathf.Max(Mathf.Floor(vCenter.x - (vPixelSize.x * 0.5f)), 0);
+            int xXTo = (int)Mathf.Min(Mathf.Ceil(vCenter.x + (vPixelSize.x * 0.5f)), vSourceSize.x);
+            int xYFrom = (int)Mathf.Max(Mathf.Floor(vCenter.y - (vPixelSize.y * 0.5f)), 0);
+            int xYTo = (int)Mathf.Min(Mathf.Ceil(vCenter.y + (vPixelSize.y * 0.5f)), vSourceSize.y);
+
+            //*** Loop and accumulate
+            //Vector4 oColorTotal = new Vector4();
+            Color oColorTemp = new Color();
+            float xGridCount = 0;
+            for (int iy = xYFrom; iy < xYTo; iy++)
+            {
+                for (int ix = xXFrom; ix < xXTo; ix++)
+                {
+
+                    //*** Get Color
+                    oColorTemp += aSourceColor[(int)(((float)iy * vSourceSize.x) + ix)];
+
+                    //*** Sum
+                    xGridCount++;
+                }
+            }
+
+            //*** Average Color
+            aColor[i] = oColorTemp / (float)xGridCount;
+        }
+            //*** Set Pixels
+            oNewTex.SetPixels(aColor);
+            oNewTex.Apply();
+
+            //*** Return
+            return oNewTex;
+        }
 
     void CreateTextureFromByteArray(byte[] texture_Array)
     {
@@ -179,10 +301,11 @@ public class FileBrowserManager : MonoBehaviour {
     {
         byte[] image_Array = null;
         bool slideReady = false;
+        ImageManager.Instance.RemoveTexture();
 
+       
         while (!slideReady)
         {
-            pptxViewer.CallStatic("getPrepareSlide");
             yield return new WaitForSeconds(1f);
             image_Array = pptxReeciver.GetStatic<byte[]>("bytes");
             if (image_Array == null)
@@ -196,9 +319,12 @@ public class FileBrowserManager : MonoBehaviour {
                 CreateTextureFromByteArray(image_Array);
                 nextSlideButton.SetActive(true);
                 previousSlideButton.SetActive(true);
-            }        
+            }       
         }
         pptxReeciver.SetStatic<byte[]>("bytes", null);
+        pptxReeciver.CallStatic("clear");
+        slideReady = false;
+        image_Array = null;
     }        
 
     public void OnNextSlide()
@@ -213,9 +339,10 @@ public class FileBrowserManager : MonoBehaviour {
 
     IEnumerator GenerateNextSlide()
     {
-        bool slideLoadingInitialized = false;            
 
+        bool slideLoadingInitialized = false; 
         yield return new WaitForSeconds(2f);
+
 
         if (gazed && !slideLoadingInitialized)
         {
@@ -224,27 +351,33 @@ public class FileBrowserManager : MonoBehaviour {
 
             slideLoadingInitialized = true;
             loadingIndicator.SetActive(true);
+            
             pptxViewer.CallStatic("prepareNextSlide");
 
             StartCoroutine(GetPrepareSlide());
         }
+        slideLoadingInitialized = false;
     }
 
     IEnumerator GeneratePreviousSlide()
     {
+
         bool slideLoadingInitialized = false;
         yield return new WaitForSeconds(2f);
+
 
         if (gazed && !slideLoadingInitialized)
         {
             nextSlideButton.SetActive(false);
             previousSlideButton.SetActive(false);
             loadingIndicator.SetActive(true);
-
-            pptxViewer.CallStatic("preparePreviosSlide");
+            slideLoadingInitialized = true;
+            
+            pptxViewer.CallStatic("preparePreviousSlide");
 
             StartCoroutine(GetPrepareSlide());
         }
+        slideLoadingInitialized = false;
     }
 
     public void OnExitRoom()
@@ -258,19 +391,28 @@ public class FileBrowserManager : MonoBehaviour {
 
         if (gazed)
         {
+            yield return new WaitForEndOfFrame();
             PhotonNetwork.LeaveLobby();
             while (PhotonNetwork.insideLobby)
                 yield return null;
 
+            yield return new WaitForEndOfFrame();
             PhotonNetwork.LeaveRoom();
             while (PhotonNetwork.inRoom)
                 yield return null;
 
+            yield return new WaitForEndOfFrame();
             PhotonNetwork.Disconnect();
             while (PhotonNetwork.connected)
                 yield return null;
 
+            yield return new WaitForEndOfFrame();
+            XRSettings.enabled = false;
             PhotonNetwork.LoadLevel(1);
+        }
+        else
+        {
+            Debug.Log("Else");
         }
     }
 }

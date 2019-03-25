@@ -27,10 +27,111 @@ public class PlayerNetwork : MonoBehaviour {
         PhotonNetwork.sendRateOnSerialize = 30;
 
         SceneManager.sceneLoaded += OnSceneFinishedLoading;
+
+         
+
 	}
+
+    private void Start()
+    {
+        startPPTXAplication();
+    }
+
+    private void startPPTXAplication()
+    {
+        bool fail = false;
+        string bundleId = "com.petar.pptx";
+        Debug.Log(bundleId);
+        AndroidJavaClass unityPlayer = new AndroidJavaClass("com.unity3d.player.UnityPlayer");
+        AndroidJavaObject currentActivity = unityPlayer.GetStatic<AndroidJavaObject>("currentActivity");
+        AndroidJavaObject packageManager = currentActivity.Call<AndroidJavaObject>("getPackageManager");
+
+        AndroidJavaObject launchIntent = null;
+        try
+        {
+            launchIntent = packageManager.Call<AndroidJavaObject>("getLaunchIntentForPackage", bundleId);
+            if (launchIntent == null)
+                fail = true;
+        }
+        catch (System.Exception e)
+        {
+            fail = true;
+        }
+
+        if (fail)
+        {
+
+            InstalPPTXViewerAPK();
+            
+        }
+        else {
+            currentActivity.Call("startActivity", launchIntent);
+        }
+
+
+
+        unityPlayer.Dispose();
+        currentActivity.Dispose();
+        packageManager.Dispose();
+        launchIntent.Dispose();
+    }
+
+    private void InstalPPTXViewerAPK()
+    {
+        string apkPath = Application.persistentDataPath + "/PPTXViewer.apk";
+        string apkPathSA = Path.Combine(Application.streamingAssetsPath, "PPTXViewer.apk");
+        Debug.Log("Path to: " + apkPath);
+        Debug.Log("Path from: " + apkPathSA);
+        byte[] result = null;
+        if (apkPathSA.Contains("://") || apkPathSA.Contains(":///"))
+        {
+            WWW file = new WWW(apkPathSA);
+            while (!file.isDone) { }
+            result = file.bytes;
+        }
+        else
+            result = File.ReadAllBytes(apkPathSA);
+
+        Debug.Log(result.Length);
+
+        if (!File.Exists(apkPath) || new FileInfo(apkPath).Length == 0)
+        {
+            //File.Create(apkPath).Dispose();
+            File.WriteAllBytes(apkPath, result);
+        } 
+
+        AndroidJavaClass unityPlayer = new AndroidJavaClass("com.unity3d.player.UnityPlayer");
+        AndroidJavaObject currentActivity = unityPlayer.GetStatic<AndroidJavaObject>("currentActivity");
+        AndroidJavaObject unityContext = currentActivity.Call<AndroidJavaObject>("getApplicationContext");
+        //Get the package Name
+        string packageName = unityContext.Call<string>("getPackageName");
+        string authority = packageName + ".fileprovider";
+
+        AndroidJavaClass intentObj = new AndroidJavaClass("android.content.Intent");
+        string ACTION_VIEW = intentObj.GetStatic<string>("ACTION_VIEW");
+        AndroidJavaObject intent = new AndroidJavaObject("android.content.Intent", ACTION_VIEW);
+
+
+        int FLAG_ACTIVITY_NEW_TASK = intentObj.GetStatic<int>("FLAG_ACTIVITY_NEW_TASK");
+        int FLAG_GRANT_READ_URI_PERMISSION = intentObj.GetStatic<int>("FLAG_GRANT_READ_URI_PERMISSION");
+
+        //File fileObj = new File(String pathname);
+        AndroidJavaObject fileObj = new AndroidJavaObject("java.io.File", apkPath);
+        //FileProvider object that will be used to call it static function
+        AndroidJavaClass fileProvider = new AndroidJavaClass("android.support.v4.content.FileProvider");
+        //getUriForFile(Context context, String authority, File file)
+        AndroidJavaObject uri = fileProvider.CallStatic<AndroidJavaObject>("getUriForFile", unityContext, authority, fileObj);
+
+        intent.Call<AndroidJavaObject>("setDataAndType", uri, "application/vnd.android.package-archive");
+        intent.Call<AndroidJavaObject>("addFlags", FLAG_ACTIVITY_NEW_TASK);
+        intent.Call<AndroidJavaObject>("addFlags", FLAG_GRANT_READ_URI_PERMISSION);
+        currentActivity.Call("startActivity", intent);
+
+    }
 
     private void OnSceneFinishedLoading(Scene scene, LoadSceneMode mode)
     {
+        PlayersInGame = 0;
         if (scene.name == "Game")
         {
             if (PhotonNetwork.isMasterClient)
@@ -65,13 +166,14 @@ public class PlayerNetwork : MonoBehaviour {
         if (PlayersInGame == PhotonNetwork.playerList.Length)
         {
             PhotonView.RPC("RPC_CreatePlayer", PhotonTargets.All);
-            XRSettings.enabled = true;
         }
     } 
 
     [PunRPC]
     private void RPC_CreatePlayer()
     {
+        XRSettings.enabled = true;
+
         int ID = MainCanvasManager.Instance.PlayerLayoutGroup.PlayerListings.FindIndex(player => player.PlayerName.text == PlayerName);
 
         GameObject positions = GameObject.FindGameObjectWithTag("Respawn");
@@ -108,6 +210,7 @@ public class PlayerNetwork : MonoBehaviour {
         texture.LoadImage(data);
         Sprite newSprite = Sprite.Create(texture, new Rect(0, 0, texture.width, texture.height), new Vector2(0.5f, 0.5f));
         ImageManager.Instance.sharedImage.enabled = true;
+        ImageManager.Instance.sharedImage.sprite = null;
         ImageManager.Instance.sharedImage.sprite = newSprite;
     }
 

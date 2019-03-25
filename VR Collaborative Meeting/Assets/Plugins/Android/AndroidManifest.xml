@@ -22,6 +22,15 @@
         <category android:name="android.intent.category.LAUNCHER" />
       </intent-filter>
     </activity>
+    <provider
+          android:name="android.support.v4.content.FileProvider"
+          android:authorities="com.elfak.vrcollaborativemeeting.fileprovider"
+          android:exported="false"
+          android:grantUriPermissions="true">
+      <meta-data
+          android:name="android.support.FILE_PROVIDER_PATHS"
+          android:resource="@xml/provider_paths"/>
+    </provider>
   </application>
   
   <uses-sdk android:minSdkVersion="19"
@@ -30,4 +39,5 @@
   <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
   <uses-permission android:name="android.permission.RECORD_AUDIO"/> 
   <uses-permission android:name="android.permission.INTERNET" />
+  <uses-permission android:name="android.permission.REQUEST_INSTALL_PACKAGES" />
 </manifest>

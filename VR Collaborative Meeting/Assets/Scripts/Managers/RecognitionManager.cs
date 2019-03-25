@@ -11,7 +11,7 @@ public class RecognitionManager : MonoBehaviour {
 
     private static readonly string COMMAND_ROOM_NAME = "ROOM NAME";
     private static readonly string COMMAND_CLIENTS = "CLIENTS";
-    private static readonly string COMMAND_PLAYER_NAME = "PLAYER NAME";
+    //private static readonly string COMMAND_PLAYER_NAME = "PLAYER NAME";
     private static readonly string COMMAND_CREATE_ROOM = "CREATE ROOM";
     private static readonly string COMMAND_JOIN_ROOM = "JOIN";
     private static readonly string COMMAND_LEAVE_ROOM = "LEAVE ROOM";

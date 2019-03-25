@@ -1,6 +1,6 @@
 Android
 PlayerPath?
-C:/Users/aleks/Desktop/test.apk
+C:/Users/Petar/Documents/GitHub/VR_Collaborative_Meeting/VR Collaborative Meeting/test.apk
 SceneListBegin?
 Assets/Scenes/Splash.unity
 Assets/Scenes/Main.unity
