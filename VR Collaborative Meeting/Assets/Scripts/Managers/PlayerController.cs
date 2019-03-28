@@ -31,6 +31,7 @@ public class PlayerController : Photon.MonoBehaviour
     void CheckInput()
     {
         float forward = Input.GetAxis("Vertical");
+        float side = Input.GetAxis("Horizontal");
 
         Head.transform.rotation = Camera.main.transform.rotation;
         transform.rotation = Quaternion.Euler(0f, Camera.main.transform.rotation.eulerAngles.y, 0f);
@@ -39,7 +40,8 @@ public class PlayerController : Photon.MonoBehaviour
             Camera.main.transform.parent.transform.position.y,
             transform.position.z);
 
-        transform.position += Vector3.Scale(Camera.main.transform.forward, new Vector3(1f, 0f, 1f)) * (forward * speed * Time.deltaTime);
+        transform.position += Vector3.Scale(Camera.main.transform.forward, new Vector3(1f, 0f, 1f)) * (forward * speed * Time.deltaTime) +
+            Vector3.Scale(Camera.main.transform.right, new Vector3(1f, 0f, 1f)) * (side * speed * Time.deltaTime);
 
         if (Input.GetKeyUp(KeyCode.Joystick1Button0))
             PhotonVoiceRecorder.Transmit = true;

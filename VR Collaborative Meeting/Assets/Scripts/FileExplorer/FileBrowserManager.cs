@@ -1,7 +1,6 @@
 ﻿using System.Collections;
 using UnityEngine;
 using System.IO;
-using UnityEngine.SceneManagement;
 using Assets.Scripts.Managers;
 using UnityEngine.XR;
 
@@ -57,6 +56,10 @@ public class FileBrowserManager : MonoBehaviour {
         {
             explorerOpened = true;
             GetComponent<ImageManager>().RemoveTexture();
+            nextSlideButton.SetActive(false);
+            nextSlideButton.transform.GetChild(0).transform.gameObject.SetActive(false);
+            previousSlideButton.SetActive(false);
+            previousSlideButton.transform.GetChild(0).transform.gameObject.SetActive(false);
 
             FileOpenButton.SetActive(false);
             GameObject fileBrowserObject = Instantiate(FileBrowserPrefab, transform);
@@ -79,6 +82,10 @@ public class FileBrowserManager : MonoBehaviour {
         {
             explorerOpened = true;
             GetComponent<ImageManager>().RemoveTexture();
+            nextSlideButton.SetActive(false);
+            nextSlideButton.transform.GetChild(0).transform.gameObject.SetActive(false);
+            previousSlideButton.SetActive(false);
+            previousSlideButton.transform.GetChild(0).transform.gameObject.SetActive(false);
 
             FileOpenButton.SetActive(false);
             GameObject fileBrowserObject = Instantiate(FileBrowserPrefab, transform);
@@ -96,6 +103,10 @@ public class FileBrowserManager : MonoBehaviour {
         GetComponent<ImageManager>().RemoveTexture();
         explorerOpened = false;
         FileOpenButton.SetActive(true);
+        nextSlideButton.SetActive(false);
+        nextSlideButton.transform.GetChild(0).transform.gameObject.SetActive(false);
+        previousSlideButton.SetActive(false);
+        previousSlideButton.transform.GetChild(0).transform.gameObject.SetActive(false);
     }
 
     IEnumerator CreateTextureFromFile(string path)
@@ -135,8 +146,6 @@ public class FileBrowserManager : MonoBehaviour {
             }
 
             TextureScale.Bilinear(texture, width, height);
-            Debug.Log(texture.width + " " + texture.height);
-
             GetComponent<ImageManager>().GenerateTexture(texture);
         }
         else
@@ -268,11 +277,11 @@ public class FileBrowserManager : MonoBehaviour {
                 case "pptx":
                     LoadPPTXFromFile(path);
                     break;
-
             }
             FileOpenButton.SetActive(true);
         }
-        else {
+        else
+        {
 			Debug.Log("Invalid path given!");
 		}
 	}
@@ -293,7 +302,9 @@ public class FileBrowserManager : MonoBehaviour {
     {
         loadingIndicator.SetActive(true);
         nextSlideButton.SetActive(false);
+        nextSlideButton.transform.GetChild(0).transform.gameObject.SetActive(false);
         previousSlideButton.SetActive(false);
+        previousSlideButton.transform.GetChild(0).transform.gameObject.SetActive(false);
         StartCoroutine(GetPrepareSlide());
     }
 
@@ -302,7 +313,6 @@ public class FileBrowserManager : MonoBehaviour {
         byte[] image_Array = null;
         bool slideReady = false;
         ImageManager.Instance.RemoveTexture();
-
        
         while (!slideReady)
         {
@@ -318,7 +328,9 @@ public class FileBrowserManager : MonoBehaviour {
                 loadingIndicator.SetActive(false);
                 CreateTextureFromByteArray(image_Array);
                 nextSlideButton.SetActive(true);
+                nextSlideButton.transform.GetChild(0).transform.gameObject.SetActive(false);
                 previousSlideButton.SetActive(true);
+                previousSlideButton.transform.GetChild(0).transform.gameObject.SetActive(false);
             }       
         }
         pptxReeciver.SetStatic<byte[]>("bytes", null);
@@ -339,15 +351,15 @@ public class FileBrowserManager : MonoBehaviour {
 
     IEnumerator GenerateNextSlide()
     {
-
         bool slideLoadingInitialized = false; 
         yield return new WaitForSeconds(2f);
-
 
         if (gazed && !slideLoadingInitialized)
         {
             nextSlideButton.SetActive(false);
+            nextSlideButton.transform.GetChild(0).transform.gameObject.SetActive(false);
             previousSlideButton.SetActive(false);
+            previousSlideButton.transform.GetChild(0).transform.gameObject.SetActive(false);
 
             slideLoadingInitialized = true;
             loadingIndicator.SetActive(true);
@@ -361,15 +373,15 @@ public class FileBrowserManager : MonoBehaviour {
 
     IEnumerator GeneratePreviousSlide()
     {
-
         bool slideLoadingInitialized = false;
         yield return new WaitForSeconds(2f);
-
 
         if (gazed && !slideLoadingInitialized)
         {
             nextSlideButton.SetActive(false);
+            nextSlideButton.transform.GetChild(0).transform.gameObject.SetActive(false);
             previousSlideButton.SetActive(false);
+            previousSlideButton.transform.GetChild(0).transform.gameObject.SetActive(false);
             loadingIndicator.SetActive(true);
             slideLoadingInitialized = true;
             

@@ -27,7 +27,7 @@ public class PortraitUserInterface : UserInterface
         for (int i = 0; i < DirectoriesParent.transform.childCount; i++)
         {
             var child = DirectoriesParent.transform.GetChild(i).transform.gameObject;
-            if (child.GetComponent<RectTransform>().position.y > 3.4f || child.GetComponent<RectTransform>().position.y < 2f)
+            if (child.GetComponent<RectTransform>().position.y > 3.8f || child.GetComponent<RectTransform>().position.y < 2.3f)
             {
                 for (int j = 0; j < child.transform.childCount; j++)
                 {
@@ -103,7 +103,6 @@ public class PortraitUserInterface : UserInterface
         do
         {
             MainManager.Instance.FileBrowser.DirectoryUp();
-            //UpdateFileStatus();
             yield return new WaitForSeconds(1.5f);
         }
         while (directory_Gazed);
@@ -138,8 +137,6 @@ public class PortraitUserInterface : UserInterface
         if (DirectoriesParent.GetComponent<RectTransform>().offsetMax.y < totalSize)
             DirectoriesParent.GetComponent<RectTransform>().offsetMax = new Vector2(DirectoriesParent.GetComponent<RectTransform>().offsetMax.x,
                 DirectoriesParent.GetComponent<RectTransform>().offsetMax.y + cellSizeY * 4);
-
-        //UpdateFileStatus();
     }
 
     IEnumerator ScrollDown()
@@ -154,10 +151,8 @@ public class PortraitUserInterface : UserInterface
             if (DirectoriesParent.GetComponent<RectTransform>().offsetMax.y < totalSize)
                 DirectoriesParent.GetComponent<RectTransform>().offsetMax = new Vector2(DirectoriesParent.GetComponent<RectTransform>().offsetMax.x,
                     DirectoriesParent.GetComponent<RectTransform>().offsetMax.y + cellSizeY * 4);
-
-            //UpdateFileStatus();
-
-            yield return new WaitForSeconds(1.5f);
+            
+            yield return new WaitForSeconds(2f);
         }
         while (scrollDown_Gazed);
     }
@@ -174,8 +169,6 @@ public class PortraitUserInterface : UserInterface
         if (DirectoriesParent.GetComponent<RectTransform>().offsetMax.y > 0)
             DirectoriesParent.GetComponent<RectTransform>().offsetMax = new Vector2(DirectoriesParent.GetComponent<RectTransform>().offsetMax.x,
                 DirectoriesParent.GetComponent<RectTransform>().offsetMax.y - cellSizeY * 4);
-
-        //UpdateFileStatus();
     }
 
     IEnumerator ScrollUp()
@@ -190,9 +183,7 @@ public class PortraitUserInterface : UserInterface
                 DirectoriesParent.GetComponent<RectTransform>().offsetMax = new Vector2(DirectoriesParent.GetComponent<RectTransform>().offsetMax.x,
                     DirectoriesParent.GetComponent<RectTransform>().offsetMax.y - cellSizeY * 4);
 
-            //UpdateFileStatus();
-
-            yield return new WaitForSeconds(1.5f);
+            yield return new WaitForSeconds(2f);
         }
         while (scrollUp_Gazed);
     }

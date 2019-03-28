@@ -50,4 +50,9 @@ public class MainCanvasManager : MonoBehaviour
     {
         Instance = this;
     }
+
+    public void OnClickExit()
+    {
+        Application.Quit();
+    }
 }

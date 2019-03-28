@@ -18,18 +18,12 @@ public class PlayerNetwork : MonoBehaviour {
     private void Awake()
     {
         Instance = this;
-
         PhotonView = GetComponent<PhotonView>();
-
         PlayerName = "Client#" + Random.Range(1000, 9999);
         
         PhotonNetwork.sendRate = 60;
         PhotonNetwork.sendRateOnSerialize = 30;
-
         SceneManager.sceneLoaded += OnSceneFinishedLoading;
-
-         
-
 	}
 
     private void Start()
@@ -59,15 +53,17 @@ public class PlayerNetwork : MonoBehaviour {
 
         if (fail)
         {
-
-            InstalPPTXViewerAPK();
-            
+            InstalPPTXViewerAPK();            
         }
-        else {
+        else
+        {
+            string apkPath = Application.persistentDataPath + "/PPTXViewer.apk";
+            if (File.Exists(apkPath))
+            {
+                File.Delete(apkPath);
+            }
             currentActivity.Call("startActivity", launchIntent);
         }
-
-
 
         unityPlayer.Dispose();
         currentActivity.Dispose();
@@ -88,12 +84,10 @@ public class PlayerNetwork : MonoBehaviour {
             result = file.bytes;
         }
         else
-            result = File.ReadAllBytes(apkPathSA);
-        
+            result = File.ReadAllBytes(apkPathSA);        
 
         if (!File.Exists(apkPath) || new FileInfo(apkPath).Length == 0)
         {
-            //File.Create(apkPath).Dispose();
             File.WriteAllBytes(apkPath, result);
         } 
 
@@ -124,6 +118,8 @@ public class PlayerNetwork : MonoBehaviour {
         intent.Call<AndroidJavaObject>("addFlags", FLAG_GRANT_READ_URI_PERMISSION);
         currentActivity.Call("startActivity", intent);
 
+        unityPlayer.Dispose();
+        currentActivity.Dispose();
     }
 
     private void OnSceneFinishedLoading(Scene scene, LoadSceneMode mode)

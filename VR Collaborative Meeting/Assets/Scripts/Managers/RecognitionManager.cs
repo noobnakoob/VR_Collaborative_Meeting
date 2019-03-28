@@ -18,6 +18,7 @@ public class RecognitionManager : MonoBehaviour {
     private static readonly string COMMAND_ENTER = "ENTER";
     private static readonly string COMMAND_ENTER_LOCK = "ENTER LOCK";
     private static readonly string COMMAND_ROOM_STATE = "CHANGE STATE";
+    private static readonly string COMMAND_EXIT = "EXIT";
     private static readonly string COMMAND_OPEN_FILE = "OPEN BROWSER";
     private static readonly string COMMAND_CLOSE_FILE = "CLOSE BROWSER";
     private static readonly string COMMAND_SELECT_FILE = "SELECT FILE";
@@ -107,6 +108,12 @@ public class RecognitionManager : MonoBehaviour {
                 string roomName = message_.Replace(COMMAND_JOIN_ROOM + " ", "");
                 MainCanvasManager.Instance.RoomLayoutGroup.JoinRoomVoice(roomName);
             }
+            else if (message_.Contains(COMMAND_EXIT))
+            {
+                string message = "Exiting application!";
+                MainCanvasManager.Instance.LogLayoytGroup.AddNewLog(message);
+                MainCanvasManager.Instance.OnClickExit();
+            }
         }
 
         if (SceneManager.GetActiveScene().name == "Game")
@@ -115,7 +122,10 @@ public class RecognitionManager : MonoBehaviour {
             if (message_.Contains(COMMAND_OPEN_FILE))
                 MainManager.Instance.FileBrowserManager.OpenFileBrowserVoice();
             else if (message_.Contains(COMMAND_CLOSE_FILE))
+            {
                 MainManager.Instance.FileBrowserManager.CloseFileBrowser();
+                MainManager.Instance.FileBrowser.CloseFileBrowser();
+            }
             else if (message_.Contains(COMMAND_LEAVE_ROOM))
                 MainManager.Instance.FileBrowserManager.OnExitRoom();
             else if (message_.Contains(COMMAND_NEXT_SLIDE))
@@ -135,9 +145,9 @@ public class RecognitionManager : MonoBehaviour {
             else if (message_.Contains(COMMAND_DIRECTORY_UP))
                 MainManager.Instance.FileBrowser.DirectoryUp();
             else if (message_.Contains(COMMAND_SCROLL_DOWN))
-                MainManager.Instance.PortraitUserInterface.ScrollUpVoice();
-            else if (message_.Contains(COMMAND_SCROLL_UP))
                 MainManager.Instance.PortraitUserInterface.ScrollDownVoice();
+            else if (message_.Contains(COMMAND_SCROLL_UP))
+                MainManager.Instance.PortraitUserInterface.ScrollUpVoice();
         }
     }
 
@@ -153,12 +163,6 @@ public class RecognitionManager : MonoBehaviour {
 
     private void Update()
     {
-        //foreach (KeyCode key in System.Enum.GetValues(typeof(KeyCode)))
-        //{
-        //    if (Input.GetKeyDown(key))
-        //        GetComponent<Text>().text = key.ToString();
-        //}
-
         if (Input.GetKeyUp(KeyCode.Joystick1Button4))
             StartMessage();
         else if (Input.GetKeyUp(KeyCode.Joystick1Button5))
